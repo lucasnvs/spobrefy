@@ -92,7 +92,10 @@ public class Menu {
 
     }
     private void dialogAdminArea() {
+        System.out.println("+ Menu de Ações:");
+        System.out.println("| 1 - Excluir Usuário\n| 2 - Ver usuários\n| 3 - Banir Música\n| 4 - Solicitações de Upgrade");
 
+        System.out.println("=======================================================================");
     }
 
     private void dialogUpdateProperty() {
