@@ -1,4 +1,5 @@
 package com.spobrefy;
+import java.text.ParseException;
 import java.util.Scanner;
 
 
@@ -13,9 +14,11 @@ public class Menu {
     public void init() {
         System.out.println("=======================================================================");
         System.out.println("Olá querido usuário, para acessar o sistema será necessário logar:");
-        if(!dialogLogin()) return;
+//        if(!dialogLogin()) return;
 
-        dialogAction();
+        while(true) {
+            if(!dialogFirstMenu()) break;
+        }
     }
 
     private Boolean dialogLogin() {
@@ -36,8 +39,16 @@ public class Menu {
         return false;
     }
 
-    private void dialogAction() {
-        System.out.println("+ Oque deseja fazer?\n| 1 - Ver Músicas\n| 2 - Ver Artistas\n| 3 - Ir para o perfil\n| 4 - Deslogar");
+    private Boolean dialogFirstMenu() {
+        String roleLoggedUser = sistema.getLoggedUser().getClass().getSimpleName();
+
+        System.out.println("+ Oque deseja fazer?\n| 1 - Ver Músicas\n| 2 - Ver Artistas\n| 3 - Ir para o perfil");
+        if(roleLoggedUser.equals("User")) {
+            System.out.println("| 4 - Deslogar");
+        } else {
+            System.out.println("| 4 - Área do "+ roleLoggedUser);
+            System.out.println("| 5 - Deslogar");
+        }
         int aux = scan.nextInt();
         scan.nextLine();
         System.out.println("=======================================================================");
@@ -46,20 +57,42 @@ public class Menu {
             System.out.println("|");
             System.out.println("+ Deseja fazer algumas das seguintes ações com uma música de sua escolha?");
             System.out.println("=======================================================================");
-            dialogAction();
         }
         if(aux == 2) {
             sistema.showArtists();
             System.out.println("|");
             System.out.println("+ Deseja fazer algumas das seguintes ações com um artista de sua escolha?");
             System.out.println("=======================================================================");
-            dialogAction();
         }
         if(aux == 3) {
             sistema.getLoggedUser().print();
             dialogUpdateProperty();
             System.out.println("=======================================================================");
         }
+        // sistema.getLoggedUser().getRoleMenuByPermission();
+        // roleAction(RoleAction); // handler de acao por role que recebe um enum
+
+        if(aux == 4 && roleLoggedUser.equals("User")) return false;
+
+        if(aux == 4 && !roleLoggedUser.equals("User")) {
+            switch (sistema.getLoggedUser().getClass().getSimpleName()){
+                case "Artista": dialogArtistArea();
+                    break;
+                case "Admin": dialogAdminArea();
+                    break;
+            }
+        }
+
+        if(aux == 5) return false;
+
+        return true;
+    }
+
+    private void dialogArtistArea() {
+
+    }
+    private void dialogAdminArea() {
+
     }
 
     private void dialogUpdateProperty() {
@@ -81,7 +114,6 @@ public class Menu {
                 System.out.println("=======================================================================");
                 System.out.println("NICKNAME ALTERADO COM SUCESSO PARA "+newNick);
                 System.out.println("=======================================================================");
-                dialogAction();
             }
 
             if(aux == 2) {
@@ -93,7 +125,6 @@ public class Menu {
                     System.out.println("=======================================================================");
                     System.out.println("SENHA ALTERADA COM SUCESSO!");
                     System.out.println("=======================================================================");
-                    dialogAction();
                 }
                 System.out.println("=======================================================================");
                 System.out.println("ALGO DEU ERRADO... Repita o processo e tente novamente.");
@@ -108,12 +139,11 @@ public class Menu {
                 System.out.println("=======================================================================");
                 System.out.println("EMAIL ALTERADO COM SUCESSO PARA "+newEmail);
                 System.out.println("=======================================================================");
-                dialogAction();
             }
         }
 
         if(aux == 2) {
-            dialogAction();
+            dialogFirstMenu();
         }
     }
 

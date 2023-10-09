@@ -23,6 +23,8 @@ public class Sistema {
     }
 
     public User getLoggedUser() {
+        if(loggedUser == null) return UsersDAO.getInstance().findById(999);
+
         return loggedUser;
     }
 
@@ -74,6 +76,12 @@ public class Sistema {
         System.out.println("=======================================================================");
         System.out.println("CONTA REGISTRADA COM SUCESSO!");
         System.out.println("=======================================================================");
+    }
+
+    public void upgradeUser(User user) {
+
+
+        // allUsers.update();// usuario upgradado
     }
 
     private boolean loginVerify(String nick, String pass) {

@@ -12,7 +12,7 @@ public class User {
     protected String nickname;
     protected String email;
     protected String password;
-    private ArrayList<Playlist> playlists;
+    private final ArrayList<Playlist> playlists;
 
     public User(String nick, String email, String password) {
         this.nickname = nick;
@@ -20,6 +20,14 @@ public class User {
         this.password = password;
         this.playlists = new ArrayList<>();
         idUser = ++count;
+    }
+
+    public User(int id, String nick, String email, String password) {
+        this.nickname = nick;
+        this.email = email;
+        this.password = password;
+        this.playlists = new ArrayList<>();
+        idUser = id;
     }
 
     public ArrayList<Playlist> getPlaylist() {
@@ -66,7 +74,7 @@ public class User {
         return false;
     }
 
-    public void print() throws ParseException {
+    public void print() {
         String txtPlaylist = "";
         for (Playlist playlist : playlists) {
             txtPlaylist += "-- "+playlist.getName()+" --\n";

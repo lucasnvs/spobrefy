@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.spobrefy.content.Music;
 
-public class MusicsDAO implements DaoInterface<Music> {
+public class MusicsDAO implements IDao<Music> {
     private static final MusicsDAO instance = new MusicsDAO();
     private List<Music> musicList;
 

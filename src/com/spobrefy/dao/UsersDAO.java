@@ -3,16 +3,21 @@ package com.spobrefy.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.spobrefy.users.Admin;
+import com.spobrefy.users.Artist;
 import com.spobrefy.users.User;
 
-public class UsersDAO implements DaoInterface<User> {
+public class UsersDAO implements IDao<User> {
     private static final UsersDAO instance = new UsersDAO();
     private List<User> usersList;
 
     private UsersDAO() {
         usersList = new ArrayList<>();
         usersList.add(new User("lucas", "lucas@email.com", "pastel2020"));
-        usersList.addAll(ArtistsDAO.getInstance().findAll());
+        usersList.add(new Artist("Matue", "matue30@email.com", "30praUm", "9822554812", "22/03/1998"));
+        usersList.add(new Artist("Veigh", "veighbaby@email.com", "tururum", "2349281022", "16/08/2000"));
+        usersList.add(new Artist("Teto", "tetinho@email.com", "plaktudum", "234233581022", "20/11/2002"));
+        usersList.add(new Admin(999,"Pimbola", "pimbola@email.com", "senhapimbola", "435234234","10/10/2000", "carlospiloto"));
     }
 
     public static UsersDAO getInstance() {
@@ -40,8 +45,10 @@ public class UsersDAO implements DaoInterface<User> {
     }
 
     @Override
-    public void update(User user) {
-        
+    public void update(User newUser) {
+        User u = findById(newUser.getId());
+        delete(u);
+        save(newUser);
     }
 
     @Override

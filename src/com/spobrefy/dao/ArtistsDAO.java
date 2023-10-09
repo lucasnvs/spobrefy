@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.spobrefy.users.Artist;
+import com.spobrefy.users.User;
 
-public class ArtistsDAO implements DaoInterface<Artist> {
+public class ArtistsDAO implements IDao<Artist> {
     private static final ArtistsDAO instance = new ArtistsDAO();
     private List<Artist> artistsList;
 
     private ArtistsDAO() {
         artistsList = new ArrayList<>();
-        artistsList.add(new Artist("Matue", "matue30@email.com", "30praUm", "9822554812", "22/03/1998"));
-        artistsList.add(new Artist("Veigh", "veighbaby@email.com", "tururum", "2349281022", "16/08/2000"));      
-        artistsList.add(new Artist("Teto", "tetinho@email.com", "plaktudum", "234233581022", "20/11/2002"));
+        for( User user : UsersDAO.getInstance().findAll()) {
+            if(user.getClass().getSimpleName().equals("Artist")) {
+                artistsList.add((Artist) user);
+            }
+        }
     }
 
     public static ArtistsDAO getInstance() {

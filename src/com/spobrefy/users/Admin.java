@@ -11,8 +11,11 @@ public class Admin extends NotDefaultUser {
         super(nickname, email, password, cpf, birthDate);
     }
 
-    private Admin(String nickname, String email, String password, String cpf, String birthDate, String token) {
+    public Admin(String nickname, String email, String password, String cpf, String birthDate, String token) {
         super(nickname, email, password, cpf, birthDate);
+    }
+    public Admin(int id, String nickname, String email, String password, String cpf, String birthDate, String token) {
+        super(id, nickname, email, password, cpf, birthDate);
     }
 
     public String getSpobrefyToken() {

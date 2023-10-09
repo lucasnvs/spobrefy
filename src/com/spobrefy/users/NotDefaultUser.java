@@ -5,22 +5,31 @@ import java.util.Scanner;
 import com.spobrefy.Util;
 import com.spobrefy.content.Playlist;
 
-public class NotDefaultUser extends User {
+public abstract class NotDefaultUser extends User {
     private String cpf;
-    private String birthDate;
+    private final String birthDate;
 
     protected NotDefaultUser(String nickname, String email, String password, String cpf, String birthDate) {
         super(nickname, email, password);
         this.cpf = cpf;
         this.birthDate = birthDate;
     }
+    protected NotDefaultUser(int id, String nickname, String email, String password, String cpf, String birthDate) {
+        super(id, nickname, email, password);
+        this.cpf = cpf;
+        this.birthDate = birthDate;
+    }
 
-    public String getCpf() {
+    public String getCPF() {
         return cpf;
     }
 
-    public int getAge() throws ParseException {
-        return Util.findAge( birthDate, "dd/MM/yyyy");
+    public int getAge() {
+        try {
+            return Util.findAge( birthDate, "dd/MM/yyyy");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getBirthDate() {
@@ -31,7 +40,7 @@ public class NotDefaultUser extends User {
         this.cpf = newCPF;
     }
 
-    public void print() throws ParseException {
+    public void print() {
         String txtPlaylist = "";
         for (Playlist playlist : this.getPlaylist()) {
             txtPlaylist += "-- "+playlist.getName()+" --\n";
