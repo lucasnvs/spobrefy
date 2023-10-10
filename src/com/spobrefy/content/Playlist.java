@@ -36,13 +36,14 @@ public class Playlist {
         musics.add(music);
     }
 
-    public void print() {
+    @Override
+    public String toString() {
         StringBuilder txt = new StringBuilder();
         for (Music music : musics) {
             txt.append("-- ").append(music.getName()).append(" --\n");
         }
 
         String text = String.format("Dono: %s\nNome da Playlist: %s\nMusicas: \n  %s", owner.getNickname(), name, txt.toString());
-        System.out.println(text);
+        return text;
     }
 }

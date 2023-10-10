@@ -49,4 +49,9 @@ public class MusicsDAO implements IDao<Music> {
     public void delete(Music object) {
         musicList.remove(object);
     }
+
+    @Override
+    public void deleteById(int id) {
+        delete(findById(id));
+    }
 }

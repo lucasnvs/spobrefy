@@ -1,4 +1,8 @@
-package com.spobrefy;
+package com.spobrefy.menu;
+import com.spobrefy.Sistema;
+import com.spobrefy.content.Music;
+import com.spobrefy.users.User;
+
 import java.text.ParseException;
 import java.util.Scanner;
 
@@ -65,7 +69,7 @@ public class Menu {
             System.out.println("=======================================================================");
         }
         if(aux == 3) {
-            sistema.getLoggedUser().print();
+            System.out.println(sistema.getLoggedUser());
             dialogUpdateProperty();
             System.out.println("=======================================================================");
         }
@@ -76,9 +80,13 @@ public class Menu {
 
         if(aux == 4 && !roleLoggedUser.equals("User")) {
             switch (sistema.getLoggedUser().getClass().getSimpleName()){
-                case "Artista": dialogArtistArea();
+                case "Artista": while(true) {
+                    if(!dialogArtistArea()) break;
+                }
                     break;
-                case "Admin": dialogAdminArea();
+                case "Admin": while(true) {
+                    if(!dialogAdminArea()) break;
+                }
                     break;
             }
         }
@@ -88,14 +96,57 @@ public class Menu {
         return true;
     }
 
-    private void dialogArtistArea() {
-
-    }
-    private void dialogAdminArea() {
+    private Boolean dialogArtistArea() {
         System.out.println("+ Menu de Ações:");
-        System.out.println("| 1 - Excluir Usuário\n| 2 - Ver usuários\n| 3 - Banir Música\n| 4 - Solicitações de Upgrade");
+        System.out.println("| 1 - Publicar Música");
+        System.out.println("| 2 - Voltar");
+        int aux = scan.nextInt();
+        if(aux == 1) {
+
+        }
+        if(aux == 2) {
+            return false;
+        }
+        System.out.println("=======================================================================");
+
+        return true;
+    }
+    private Boolean dialogAdminArea() {
+        System.out.println("+ Menu de Ações:");
+        System.out.println("| 1 - Excluir Usuário\n| 2 - Ver usuários\n| 3 - Banir Música\n| 4 - Solicitações de Upgrade\n| 5 - Voltar");
+        int aux = scan.nextInt();
+        scan.nextLine();
+        if(aux == 1) {
+            System.out.println("=======================================================================");
+            System.out.println("+ Digite o Id do usuário que deseja remover do sistema:");
+            int id = scan.nextInt();
+            User user = sistema.getAllUsers().findById(id);
+            sistema.getAllUsers().deleteById(id);
+            System.out.println("=======================================================================");
+            System.out.println("USUÁRIO DE ID "+id+" E NICKNAME "+user.getNickname()+" FOI REMOVIDO COM SUCESSO!");
+            System.out.println("=======================================================================");
+        }
+        if(aux == 2) {
+            sistema.showUsers();
+        }
+        if(aux == 3) {
+            sistema.showMusics();
+            System.out.println("=======================================================================");
+            System.out.println("+ Digite o Id da música a ser banida:");
+            int id = scan.nextInt();
+            Music music = sistema.getAllMusics().findById(id);
+            sistema.getAllMusics().deleteById(id);
+            System.out.println("=======================================================================");
+            System.out.println("A MÚSICA "+music.getName()+" DE "+music.getAuthor().getNickname()+" FOI BANIDA!");
+            System.out.println("=======================================================================");
+        }
+
+        if(aux == 5) {
+          return false;
+        }
 
         System.out.println("=======================================================================");
+        return true;
     }
 
     private void dialogUpdateProperty() {

@@ -8,4 +8,5 @@ public interface IDao<T> {
     void save(T object);
     void update(T object);
     void delete(T object);
+    void deleteById(int id);
 }

@@ -8,7 +8,7 @@ import com.spobrefy.dao.MusicsDAO;
 import com.spobrefy.dao.UsersDAO;
 import com.spobrefy.users.*;
 
-import static com.spobrefy.TableGenerator.createTable;
+import static com.spobrefy.menu.TableGenerator.createTable;
 
 public class Sistema {
     private final String sysName;
@@ -22,10 +22,43 @@ public class Sistema {
         this.sysName = sysName;
     }
 
+    public UsersDAO getAllUsers() {
+        return allUsers;
+    }
+
+    public ArtistsDAO getAllArtists() {
+        return allArtists;
+    }
+
+    public MusicsDAO getAllMusics() {
+        return allMusics;
+    }
+
     public User getLoggedUser() {
         if(loggedUser == null) return UsersDAO.getInstance().findById(999);
 
         return loggedUser;
+    }
+
+    public void showUsers() {
+        ArrayList<ArrayList<String>> content = new ArrayList<>();
+
+        System.out.println("| USUÁRIOS DO "+sysName.toUpperCase());
+        System.out.println("|");
+        for(User user : allUsers.findAll()) {
+            ArrayList<String> line = new ArrayList<>();
+            line.add(String.valueOf(user.getId()));
+            line.add(user.getNickname());
+            line.add(user.getClass().getSimpleName());
+            content.add(line);
+        }
+        ArrayList<String> header = new ArrayList<>();
+        header.add("ID");
+        header.add("NOME");
+        header.add("ROLE");
+
+        String table = createTable(header, content);
+        System.out.println(table);
     }
 
     public void showArtists() {
@@ -79,8 +112,6 @@ public class Sistema {
     }
 
     public void upgradeUser(User user) {
-
-
         // allUsers.update();// usuario upgradado
     }
 

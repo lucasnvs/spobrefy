@@ -52,4 +52,9 @@ public class ArtistsDAO implements IDao<Artist> {
     public void delete(Artist artist) {
         artistsList.remove(artist);
     }
+
+    @Override
+    public void deleteById(int id) {
+        delete(findById(id));
+    }
 }

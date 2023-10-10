@@ -40,13 +40,13 @@ public abstract class NotDefaultUser extends User {
         this.cpf = newCPF;
     }
 
-    public void print() {
+    public String toString() {
         String txtPlaylist = "";
         for (Playlist playlist : this.getPlaylist()) {
             txtPlaylist += "-- "+playlist.getName()+" --\n";
         }
         String text = String.format("| Id: %d\n| Nickname: %s\n| Senha: %s\n| Email: %s\n| Idade: %d anos\n| CPF: %s\n| Data de Aniversário: %s\n| Playlists do Usuário: \n %s", getId(), nickname, password, email, getAge(), cpf, birthDate, txtPlaylist);
-        System.out.println(text);
+        return text;
     }
 
     public static <T extends NotDefaultUser> T create(Class<T> userType, Scanner scanner) {

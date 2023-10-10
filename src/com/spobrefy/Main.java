@@ -1,9 +1,8 @@
-package com.spobrefy.test;
+package com.spobrefy;
 
-import com.spobrefy.Sistema;
-import com.spobrefy.Menu;
+import com.spobrefy.menu.Menu;
 
-public class allTest {
+public class Main {
     public static void main(String[] args) {
         Sistema sistema = new Sistema("Spobrefy");
 

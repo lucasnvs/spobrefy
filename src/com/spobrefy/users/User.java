@@ -73,15 +73,15 @@ public class User {
         }
         return false;
     }
-
-    public void print() {
+    @Override
+    public String toString() {
         String txtPlaylist = "";
         for (Playlist playlist : playlists) {
             txtPlaylist += "-- "+playlist.getName()+" --\n";
         }
 
         String text = String.format("| Id: %d\n| Nickname: %s\n| Senha: %s\n| Email: %s\n| Playlists do usuário: \n %s", idUser, nickname, password, email, txtPlaylist);
-        System.out.println(text);
+        return text;
     }
 
     public static User create(Scanner scanner) {
