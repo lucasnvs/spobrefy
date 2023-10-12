@@ -1,10 +1,9 @@
-package com.spobrefy.users;
+package com.spobrefy.model.users;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.spobrefy.content.Playlist;
+import com.spobrefy.model.Playlist;
 
 public class User {
     protected int idUser;

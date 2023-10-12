@@ -1,8 +1,7 @@
 package com.spobrefy.hur;
 
-import com.spobrefy.hur.IUpgradeTo;
-import com.spobrefy.users.Artist;
-import com.spobrefy.users.User;
+import com.spobrefy.model.users.Artist;
+import com.spobrefy.model.users.User;
 
 public class UpgradeUserToArtist implements IUpgradeTo<User, Artist> {
 

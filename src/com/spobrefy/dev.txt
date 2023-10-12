@@ -1,17 +1,10 @@
 Classe Music
 
-1 - Ouvir // ao clicar em ouvir add +1 nas visualizacoes
-2 - Dar like / Deslike (caso ja tenha dado like) // relacionado ao rating
-3 - Add Comentario // comentarios
-4 - Ver comentario // comentarios
-
-Classe Sistema
+TODO: 1 - Ouvir // ao clicar em ouvir add +1 nas visualizacoes
+TODO: 2 - Dar like / Deslike (caso ja tenha dado like) // relacionado ao rating
+TODO: 3 - Add Comentario // comentarios
+TODO: 4 - Ver comentario // comentarios
 
 Solicitacoes de upgrade
-
-
-PERMISSIONS
-
-Artista - fun "Canto do Artista" || ArtistArea
-
-Admin - fun AdmArea || AdmArea
+    TODO: DAO para UpgradeRequest
+    TODO: Adm aceitar ou nao UpgradeRequest

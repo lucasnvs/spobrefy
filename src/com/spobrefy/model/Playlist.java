@@ -1,14 +1,14 @@
-package com.spobrefy.content;
+package com.spobrefy.model;
 
 import java.util.ArrayList;
 
-import com.spobrefy.users.Artist;
-import com.spobrefy.users.User;
+import com.spobrefy.model.users.Artist;
+import com.spobrefy.model.users.User;
 
 public class Playlist {
     private final Artist owner;
     private final String name;
-    private ArrayList<Music> musics;  
+    private ArrayList<Music> musics;
 
     public Playlist(Artist owner, String name) { // criar uma lista vazia independente do contrutor e add musicas pelo metodo
         this.owner = owner;

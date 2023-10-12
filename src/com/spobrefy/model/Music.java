@@ -1,9 +1,9 @@
-package com.spobrefy.content;
+package com.spobrefy.model;
 
-import java.util.List;
 import java.util.Scanner;
 
-import com.spobrefy.users.Artist;
+import com.spobrefy.dao.ArtistsDAO;
+import com.spobrefy.model.users.Artist;
 
 public class Music {
     private static int count = 0;
@@ -11,7 +11,6 @@ public class Music {
     private final String name;
     private final Artist author;
 
-    // necessario rever este metodo e o funcionamento junto com os parametros do metodo create
     public Music(String name, Artist author) {
         this.name = name;
         this.author = author;
@@ -31,8 +30,8 @@ public class Music {
         return author;
     }
 
-    private static Artist findAuthor(List<Artist> list, String authorName) {
-        for (Artist artist : list) {
+    private static Artist findAuthor(String authorName) {
+        for (Artist artist : ArtistsDAO.getInstance().findAll()) {
             if (artist.getNickname().equals(authorName)) {
                 return artist;
             }
@@ -40,14 +39,12 @@ public class Music {
         return null;
     }
 
-    public static Music create(List<Artist> list, Scanner scanner) {
-        // nao consegui consertar o bug
+    public static Music create(Scanner scanner, int idAuthor) {
+        // nao consegui consertar o bug // um tempo depois... qual bug? nao sei
         System.out.println("Qual o título?");
         String title = scanner.nextLine();
-        System.out.println("Qual o nome do autor?");
-        String authorName = scanner.nextLine();
 
-        Artist author = findAuthor(list, authorName);
+        Artist author = ArtistsDAO.getInstance().findById(idAuthor);
         return new Music(title, author);
     }
 }

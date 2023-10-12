@@ -2,11 +2,13 @@ package com.spobrefy;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.spobrefy.content.Music;
+import com.spobrefy.model.Music;
 import com.spobrefy.dao.ArtistsDAO;
 import com.spobrefy.dao.MusicsDAO;
 import com.spobrefy.dao.UsersDAO;
-import com.spobrefy.users.*;
+import com.spobrefy.model.UpgradeRequest;
+import com.spobrefy.model.UpgradeType;
+import com.spobrefy.model.users.*;
 
 import static com.spobrefy.menu.TableGenerator.createTable;
 
@@ -17,9 +19,12 @@ public class Sistema {
     private final UsersDAO allUsers = UsersDAO.getInstance();
     private final ArtistsDAO allArtists = ArtistsDAO.getInstance();
     private final MusicsDAO allMusics = MusicsDAO.getInstance();
+    private ArrayList<UpgradeRequest> upgradeRequests;
 
     public Sistema(String sysName) {
         this.sysName = sysName;
+        this.upgradeRequests = new ArrayList<>();
+        sendUpgradeRequest(new UpgradeRequest(UsersDAO.getInstance().findById(5), UpgradeType.USER_TO_ARTIST)); // gambiarra pra add um de exemplo
     }
 
     public UsersDAO getAllUsers() {
@@ -102,6 +107,49 @@ public class Sistema {
         String tabela = createTable(cabecalho, content);
         System.out.println(tabela);
     }
+
+    public void showUpgradeRequests() {
+        if(upgradeRequests.size() == 0) {
+            System.out.println("=======================================================================");
+            System.out.println("NENHUMA SOLICITAÇÃO REGISTRADA...");
+            return;
+        }
+
+        ArrayList<ArrayList<String>> content = new ArrayList<>();
+
+        System.out.println("| SOLICITAÇÕES DE UPGRADE DO "+sysName.toUpperCase());
+        System.out.println("|");
+        for( UpgradeRequest upgrade : getUpgradeRequests()) {
+            ArrayList<String> line = new ArrayList<>();
+            line.add(String.valueOf(upgrade.getId()));
+            line.add(String.valueOf(upgrade.getSender().getId()));
+            line.add(upgrade.getSender().getNickname());
+            line.add(upgrade.getType().toString());
+
+            if(upgrade.getIsAnswered()) {
+                line.add("RESPONDIDO");
+            } else {
+                line.add("NÃO RESPONDIDO");
+            }
+            if(upgrade.getAnswer()) {
+                line.add("SIM");
+            } else {
+                line.add("NÃO");
+            }
+
+            content.add(line);
+        }
+        ArrayList<String> cabecalho = new ArrayList<>();
+        cabecalho.add("ID");
+        cabecalho.add("ID USUÁRIO");
+        cabecalho.add("NOME DO USUÁRIO");
+        cabecalho.add("TIPO");
+        cabecalho.add("STATUS");
+        cabecalho.add("RESPOSTA");
+
+        String tabela = createTable(cabecalho, content);
+        System.out.println(tabela);
+    }
     public void registerUser() {
         User user = User.create(this.scan);
         this.allUsers.save(user);
@@ -111,6 +159,28 @@ public class Sistema {
         System.out.println("=======================================================================");
     }
 
+    public void registerMusic() {
+        Music newMusic = Music.create(this.scan, this.getLoggedUser().getId());
+        this.allMusics.save(newMusic);
+
+        System.out.println("=======================================================================");
+        System.out.println("SUA MÚSICA "+newMusic.getName()+" FOI PUBLICADA COM SUCESSO!");
+        System.out.println("=======================================================================");
+    }
+
+    public ArrayList<UpgradeRequest> getUpgradeRequests() {
+        return upgradeRequests;
+    }
+
+    public void sendUpgradeRequest(UpgradeRequest request) {
+        upgradeRequests.add(request);
+    }
+    public Boolean userSendedUpgradeRequest(int idUser) {
+        for(UpgradeRequest upgrade : upgradeRequests) {
+            if(upgrade.getSender().getId() == idUser) return true;
+        }
+        return false;
+    }
     public void upgradeUser(User user) {
         // allUsers.update();// usuario upgradado
     }
@@ -144,9 +214,11 @@ public class Sistema {
 
                 if(aux == 1) {
                     this.scan.nextLine();
-                    login();
+                    return login();
                 }
-                return false;
+                if(aux == 2) {
+                    return false;
+                }
             }
             
             System.out.println("=======================================================================");      
