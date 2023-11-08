@@ -6,5 +6,5 @@ TODO: 3 - Add Comentario // comentarios
 TODO: 4 - Ver comentario // comentarios
 
 Solicitacoes de upgrade
-    TODO: DAO para UpgradeRequest
+
     TODO: Adm aceitar ou nao UpgradeRequest

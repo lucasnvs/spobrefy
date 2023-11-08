@@ -13,9 +13,11 @@ public class Admin extends NotDefaultUser {
 
     public Admin(String nickname, String email, String password, String cpf, String birthDate, String token) {
         super(nickname, email, password, cpf, birthDate);
+        this.spobrefyToken = token;
     }
     public Admin(int id, String nickname, String email, String password, String cpf, String birthDate, String token) {
         super(id, nickname, email, password, cpf, birthDate);
+        this.spobrefyToken = token;
     }
 
     public String getSpobrefyToken() {

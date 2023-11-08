@@ -2,12 +2,12 @@ package com.spobrefy;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.spobrefy.dao.UpgradeRequestsDAO;
 import com.spobrefy.model.Music;
 import com.spobrefy.dao.ArtistsDAO;
 import com.spobrefy.dao.MusicsDAO;
 import com.spobrefy.dao.UsersDAO;
 import com.spobrefy.model.UpgradeRequest;
-import com.spobrefy.model.UpgradeType;
 import com.spobrefy.model.users.*;
 
 import static com.spobrefy.menu.TableGenerator.createTable;
@@ -19,12 +19,10 @@ public class Sistema {
     private final UsersDAO allUsers = UsersDAO.getInstance();
     private final ArtistsDAO allArtists = ArtistsDAO.getInstance();
     private final MusicsDAO allMusics = MusicsDAO.getInstance();
-    private ArrayList<UpgradeRequest> upgradeRequests;
+    private final UpgradeRequestsDAO allUpgradeRequests = UpgradeRequestsDAO.getInstance();
 
     public Sistema(String sysName) {
         this.sysName = sysName;
-        this.upgradeRequests = new ArrayList<>();
-        sendUpgradeRequest(new UpgradeRequest(UsersDAO.getInstance().findById(5), UpgradeType.USER_TO_ARTIST)); // gambiarra pra add um de exemplo
     }
 
     public UsersDAO getAllUsers() {
@@ -109,7 +107,7 @@ public class Sistema {
     }
 
     public void showUpgradeRequests() {
-        if(upgradeRequests.size() == 0) {
+        if(allUpgradeRequests.findAll().size() == 0) {
             System.out.println("=======================================================================");
             System.out.println("NENHUMA SOLICITAÇÃO REGISTRADA...");
             return;
@@ -119,7 +117,7 @@ public class Sistema {
 
         System.out.println("| SOLICITAÇÕES DE UPGRADE DO "+sysName.toUpperCase());
         System.out.println("|");
-        for( UpgradeRequest upgrade : getUpgradeRequests()) {
+        for( UpgradeRequest upgrade : allUpgradeRequests.findAll()) {
             ArrayList<String> line = new ArrayList<>();
             line.add(String.valueOf(upgrade.getId()));
             line.add(String.valueOf(upgrade.getSender().getId()));
@@ -168,21 +166,21 @@ public class Sistema {
         System.out.println("=======================================================================");
     }
 
-    public ArrayList<UpgradeRequest> getUpgradeRequests() {
-        return upgradeRequests;
+    public UpgradeRequestsDAO getUpgradeRequests() {
+        return allUpgradeRequests;
     }
 
     public void sendUpgradeRequest(UpgradeRequest request) {
-        upgradeRequests.add(request);
+        allUpgradeRequests.save(request);
     }
     public Boolean userSendedUpgradeRequest(int idUser) {
-        for(UpgradeRequest upgrade : upgradeRequests) {
+        for(UpgradeRequest upgrade : allUpgradeRequests.findAll()) {
             if(upgrade.getSender().getId() == idUser) return true;
         }
         return false;
     }
     public void upgradeUser(User user) {
-        // allUsers.update();// usuario upgradado
+        // allUsers.update();// TODO: usuario upgradado
     }
 
     private boolean loginVerify(String nick, String pass) {
