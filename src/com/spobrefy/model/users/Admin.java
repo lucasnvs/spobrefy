@@ -1,4 +1,4 @@
-package com.spobrefy.users;
+package com.spobrefy.model.users;
 
 import java.util.Scanner;
 

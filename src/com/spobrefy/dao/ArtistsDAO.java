@@ -3,8 +3,8 @@ package com.spobrefy.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.spobrefy.users.Artist;
-import com.spobrefy.users.User;
+import com.spobrefy.model.users.Artist;
+import com.spobrefy.model.users.User;
 
 public class ArtistsDAO implements IDao<Artist> {
     private static final ArtistsDAO instance = new ArtistsDAO();

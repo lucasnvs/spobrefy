@@ -2,7 +2,7 @@ package com.spobrefy.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.spobrefy.content.Music;
+import com.spobrefy.model.Music;
 
 public class MusicsDAO implements IDao<Music> {
     private static final MusicsDAO instance = new MusicsDAO();

@@ -1,9 +1,10 @@
 package com.spobrefy.menu;
 import com.spobrefy.Sistema;
-import com.spobrefy.content.Music;
-import com.spobrefy.users.User;
+import com.spobrefy.model.Music;
+import com.spobrefy.model.UpgradeRequest;
+import com.spobrefy.model.UpgradeType;
+import com.spobrefy.model.users.User;
 
-import java.text.ParseException;
 import java.util.Scanner;
 
 
@@ -18,7 +19,7 @@ public class Menu {
     public void init() {
         System.out.println("=======================================================================");
         System.out.println("Olá querido usuário, para acessar o sistema será necessário logar:");
-//        if(!dialogLogin()) return;
+        if(!dialogLogin()) return;
 
         while(true) {
             if(!dialogFirstMenu()) break;
@@ -59,7 +60,7 @@ public class Menu {
         if(aux == 1) {
             sistema.showMusics();
             System.out.println("|");
-            System.out.println("+ Deseja fazer algumas das seguintes ações com uma música de sua escolha?");
+            System.out.println("+ Deseja fazer algumas das seguintes ações com uma música de sua escolha?"); // TODO: detalheszitos
             System.out.println("=======================================================================");
         }
         if(aux == 2) {
@@ -73,14 +74,12 @@ public class Menu {
             dialogUpdateProperty();
             System.out.println("=======================================================================");
         }
-        // sistema.getLoggedUser().getRoleMenuByPermission();
-        // roleAction(RoleAction); // handler de acao por role que recebe um enum
 
         if(aux == 4 && roleLoggedUser.equals("User")) return false;
 
         if(aux == 4 && !roleLoggedUser.equals("User")) {
             switch (sistema.getLoggedUser().getClass().getSimpleName()){
-                case "Artista": while(true) {
+                case "Artist": while(true) {
                     if(!dialogArtistArea()) break;
                 }
                     break;
@@ -101,8 +100,9 @@ public class Menu {
         System.out.println("| 1 - Publicar Música");
         System.out.println("| 2 - Voltar");
         int aux = scan.nextInt();
+        scan.nextLine();
         if(aux == 1) {
-
+            sistema.registerMusic();
         }
         if(aux == 2) {
             return false;
@@ -140,6 +140,9 @@ public class Menu {
             System.out.println("A MÚSICA "+music.getName()+" DE "+music.getAuthor().getNickname()+" FOI BANIDA!");
             System.out.println("=======================================================================");
         }
+        if(aux == 4) {
+            sistema.showUpgradeRequests();
+        }
 
         if(aux == 5) {
           return false;
@@ -149,9 +152,21 @@ public class Menu {
         return true;
     }
 
-    private void dialogUpdateProperty() {
+    private Boolean dialogUpdateProperty() {
         System.out.println("+ Deseja atualizar alguma informação do seu Perfil?");
-        System.out.println("| 1 - Atualizar \n| 2 - Voltar para o início");
+        System.out.println("| 1 - Atualizar");
+        if(sistema.getLoggedUser().getClass().getSimpleName().equals("User")) {
+            if(sistema.userSendedUpgradeRequest(sistema.getLoggedUser().getId())){
+                System.out.println("| ! - Solicitação para se tornar Artista já enviada e esperando resposta...");
+            }
+            else {
+                System.out.println("| 2 - Tornar-se Artista");
+            }
+            System.out.println("| 3 - Voltar para o início");
+        } else {
+            System.out.println("| 2 - Voltar para o início");
+        }
+
         int aux = scan.nextInt();
         scan.nextLine();
         System.out.println("=======================================================================");
@@ -196,9 +211,20 @@ public class Menu {
             }
         }
 
-        if(aux == 2) {
-            dialogFirstMenu();
+        if(aux == 2 && !sistema.getLoggedUser().getClass().getSimpleName().equals("User")) return false;
+
+        if(aux == 2 && sistema.getLoggedUser().getClass().getSimpleName().equals("User") && !sistema.userSendedUpgradeRequest(sistema.getLoggedUser().getId())) {
+            UpgradeRequest request = new UpgradeRequest(sistema.getLoggedUser(), UpgradeType.USER_TO_ARTIST);
+
+            sistema.sendUpgradeRequest(request);
+            System.out.println("=======================================================================");
+            System.out.println("Solicitação enviada com sucesso!");
+            System.out.println("=======================================================================");
         }
+
+        if(aux == 3) return false;
+
+        return true;
     }
 
 }

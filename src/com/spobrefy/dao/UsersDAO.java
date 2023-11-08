@@ -3,10 +3,9 @@ package com.spobrefy.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.spobrefy.Sistema;
-import com.spobrefy.users.Admin;
-import com.spobrefy.users.Artist;
-import com.spobrefy.users.User;
+import com.spobrefy.model.users.Admin;
+import com.spobrefy.model.users.Artist;
+import com.spobrefy.model.users.User;
 
 public class UsersDAO implements IDao<User> {
     private static final UsersDAO instance = new UsersDAO();
@@ -18,7 +17,8 @@ public class UsersDAO implements IDao<User> {
         usersList.add(new Artist("Matue", "matue30@email.com", "30praUm", "9822554812", "22/03/1998"));
         usersList.add(new Artist("Veigh", "veighbaby@email.com", "tururum", "2349281022", "16/08/2000"));
         usersList.add(new Artist("Teto", "tetinho@email.com", "plaktudum", "234233581022", "20/11/2002"));
-        usersList.add(new Admin(999,"Pimbola", "pimbola@email.com", "senhapimbola", "435234234","10/10/2000", "carlospiloto"));
+        usersList.add(new User("CarlosPiloto", "carlos@email.com", "carlospiloto"));
+        usersList.add(new Admin(999,"Pimbola", "pimbola@email.com", "senhapimbola", "435234234","10/10/2000", "pimbolatoken"));
     }
 
     public static UsersDAO getInstance() {
