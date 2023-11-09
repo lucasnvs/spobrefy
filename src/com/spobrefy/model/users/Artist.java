@@ -5,7 +5,7 @@ import java.util.Scanner;
 import com.spobrefy.model.Playlist;
 
 public class Artist extends NotDefaultUser{
-    private Playlist authoredPlaylist = new Playlist(this, "Playlist Autoral");
+    private final Playlist authoredPlaylist = new Playlist(this, "Playlist Autoral");
 
     public Artist(String nickname, String email, String password, String cpf, String birthDate) {
         super(nickname, email, password, cpf, birthDate);

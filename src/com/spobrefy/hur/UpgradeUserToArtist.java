@@ -10,7 +10,6 @@ public class UpgradeUserToArtist implements IUpgradeTo<User, Artist> {
         // remover da lista que ele pertence e add na lista de artistas, nao sei se faço por aq ou no metodo do sistema
         String birthDate = "";
         String cpf = "";
-        Artist newArtist = new Artist(obj.getId(), obj.getNickname(), obj.getEmail(), obj.getPassword(), cpf, birthDate);
-        return newArtist;
+        return new Artist(obj.getId(), obj.getNickname(), obj.getEmail(), obj.getPassword(), cpf, birthDate);
     }
 }

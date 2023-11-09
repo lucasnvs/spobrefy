@@ -9,7 +9,7 @@ import com.spobrefy.model.users.User;
 
 public class UsersDAO implements IDao<User> {
     private static final UsersDAO instance = new UsersDAO();
-    private ArrayList<User> usersList;
+    private final ArrayList<User> usersList;
 
     private UsersDAO() {
         usersList = new ArrayList<>();

@@ -31,17 +31,18 @@ public class Admin extends NotDefaultUser {
     public static Admin create(Scanner scanner) {
         Admin admin = NotDefaultUser.create(Admin.class, scanner);
         System.out.println("Qual o token de acesso?");
-        String token = scanner.next();   
-        admin.setSpobrefyToken(token);
+        String token = scanner.next();
+        if (admin != null) {
+            admin.setSpobrefyToken(token);
+        }
         return admin;
     }
 
     @Override
     public String toCsvString() {
         String[] partes = { Integer.toString(getId()), getNickname(), getEmail(), getPassword(), getClass().getSimpleName().toUpperCase(),getCPF(),getBirthDate(),getSpobrefyToken()};
-        String csvUserString = String.join(";",partes);;
 
-        return csvUserString;
+        return String.join(";",partes);
     }
 }
     

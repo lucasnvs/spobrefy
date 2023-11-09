@@ -1,6 +1,5 @@
 package com.spobrefy.dao;
 
-import com.spobrefy.model.Music;
 import com.spobrefy.model.UpgradeRequest;
 import com.spobrefy.model.UpgradeType;
 
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class UpgradeRequestsDAO implements IDao<UpgradeRequest> {
     private static final UpgradeRequestsDAO instance = new UpgradeRequestsDAO();
-    private ArrayList<UpgradeRequest> upgradeRequestsList;
+    private final ArrayList<UpgradeRequest> upgradeRequestsList;
 
     public UpgradeRequestsDAO() {
         upgradeRequestsList = new ArrayList<>();

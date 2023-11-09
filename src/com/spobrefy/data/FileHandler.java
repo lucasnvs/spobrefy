@@ -17,7 +17,7 @@ public class FileHandler {
         String caminhoArquivo =  String.join(File.separator,partesCaminho);
         File file = new File(caminhoArquivo);
 
-        Scanner sc = null;
+        Scanner sc;
         try {
             sc = new Scanner(file);
         }catch (FileNotFoundException e) {
@@ -39,13 +39,11 @@ public class FileHandler {
         String caminhoArquivo =  String.join(File.separator,partesCaminho);
         File file = new File(caminhoArquivo);
 
-        FileWriter pw = null;
+        FileWriter fw;
         try {
-            pw = new FileWriter(file, true);
-            pw.append(newLine+"\n");
-            pw.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            fw = new FileWriter(file, true);
+            fw.append(newLine).append("\n");
+            fw.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -59,17 +57,12 @@ public class FileHandler {
 
             User newUser;
             switch (values[4]) {
-                case "USER":
-                    newUser = new User(Integer.parseInt(values[0]), values[1], values[2], values[3]);
-                    break;
-                case "ARTIST":
-                    newUser = new Artist(Integer.parseInt(values[0]), values[1], values[2], values[3],values[5], values[6]);
-                    break;
-                case "ADMIN":
-                    newUser = new Admin(Integer.parseInt(values[0]), values[1], values[2], values[3], values[5], values[6], values[7]);
-                    break;
-                default:
+                case "USER" -> newUser = new User(Integer.parseInt(values[0]), values[1], values[2], values[3]);
+                case "ARTIST" -> newUser = new Artist(Integer.parseInt(values[0]), values[1], values[2], values[3], values[5], values[6]);
+                case "ADMIN" -> newUser = new Admin(Integer.parseInt(values[0]), values[1], values[2], values[3], values[5], values[6], values[7]);
+                default -> {
                     continue;
+                }
             }
 
             users.add(newUser);

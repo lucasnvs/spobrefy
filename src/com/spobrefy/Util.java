@@ -11,12 +11,8 @@ public class Util {
     
     public static int findAge(String dataNasc, String pattern) throws ParseException {
         DateFormat sdf = new SimpleDateFormat(pattern);
-        Date dataNascInput = null;
-        try {
-            dataNascInput = sdf.parse(dataNasc);
-        } catch (Exception e) {
-            throw e;
-        }
+        Date dataNascInput;
+        dataNascInput = sdf.parse(dataNasc);
 
         Calendar dateOfBirth = new GregorianCalendar();
         dateOfBirth.setTime(dataNascInput);

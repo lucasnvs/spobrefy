@@ -6,7 +6,7 @@ import java.util.Scanner;
 import com.spobrefy.model.Playlist;
 
 public class User {
-    protected int idUser;
+    protected final int idUser;
     private static int count = 0;
     protected String nickname;
     protected String email;
@@ -74,13 +74,12 @@ public class User {
     }
     @Override
     public String toString() {
-        String txtPlaylist = "";
+        StringBuilder txtPlaylist = new StringBuilder();
         for (Playlist playlist : playlists) {
-            txtPlaylist += "-- "+playlist.getName()+" --\n";
+            txtPlaylist.append("-- ").append(playlist.getName()).append(" --\n");
         }
 
-        String text = String.format("| Id: %d\n| Nickname: %s\n| Senha: %s\n| Email: %s\n| Playlists do usuário: \n %s", idUser, nickname, password, email, txtPlaylist);
-        return text;
+        return String.format("| Id: %d\n| Nickname: %s\n| Senha: %s\n| Email: %s\n| Playlists do usuário: \n %s", idUser, nickname, password, email, txtPlaylist);
     }
 
     public static User create(Scanner scanner) {
@@ -90,15 +89,13 @@ public class User {
         String email = scanner.nextLine();
         System.out.println("Qual sua senha?");
         String password = scanner.nextLine();
-        User usuario = new User(nick, email, password);
-        return usuario;
+        return new User(nick, email, password);
     }
 
     public String toCsvString() {
         String[] partes = { Integer.toString(getId()), getNickname(), getEmail(), getPassword(), getClass().getSimpleName().toUpperCase(),null,null,null};
-        String csvUserString = String.join(";",partes);;
 
-        return csvUserString;
+        return String.join(";",partes);
     }
 }
 

@@ -8,7 +8,7 @@ import com.spobrefy.model.users.User;
 public class Playlist {
     private final Artist owner;
     private final String name;
-    private ArrayList<Music> musics;
+    private final ArrayList<Music> musics;
 
     public Playlist(Artist owner, String name) { // criar uma lista vazia independente do contrutor e add musicas pelo metodo
         this.owner = owner;
@@ -43,7 +43,6 @@ public class Playlist {
             txt.append("-- ").append(music.getName()).append(" --\n");
         }
 
-        String text = String.format("Dono: %s\nNome da Playlist: %s\nMusicas: \n  %s", owner.getNickname(), name, txt.toString());
-        return text;
+        return String.format("Dono: %s\nNome da Playlist: %s\nMusicas: \n  %s", owner.getNickname(), name, txt);
     }
 }

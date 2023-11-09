@@ -8,7 +8,7 @@ import com.spobrefy.model.users.User;
 
 public class ArtistsDAO implements IDao<Artist> {
     private static final ArtistsDAO instance = new ArtistsDAO();
-    private ArrayList<Artist> artistsList;
+    private final ArrayList<Artist> artistsList;
 
     private ArtistsDAO() {
         artistsList = new ArrayList<>();

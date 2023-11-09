@@ -78,21 +78,21 @@ public class Menu {
         if(aux == 4 && roleLoggedUser.equals("User")) return false;
 
         if(aux == 4 && !roleLoggedUser.equals("User")) {
-            switch (sistema.getLoggedUser().getClass().getSimpleName()){
-                case "Artist": while(true) {
-                    if(!dialogArtistArea()) break;
+            switch (sistema.getLoggedUser().getClass().getSimpleName()) {
+                case "Artist" -> {
+                    while (true) {
+                        if (!dialogArtistArea()) break;
+                    }
                 }
-                    break;
-                case "Admin": while(true) {
-                    if(!dialogAdminArea()) break;
+                case "Admin" -> {
+                    while (true) {
+                        if (!dialogAdminArea()) break;
+                    }
                 }
-                    break;
             }
         }
 
-        if(aux == 5) return false;
-
-        return true;
+        return aux != 5;
     }
 
     private Boolean dialogArtistArea() {
@@ -222,9 +222,7 @@ public class Menu {
             System.out.println("=======================================================================");
         }
 
-        if(aux == 3) return false;
-
-        return true;
+        return aux != 3;
     }
 
 }
