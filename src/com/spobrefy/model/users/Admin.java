@@ -35,6 +35,14 @@ public class Admin extends NotDefaultUser {
         admin.setSpobrefyToken(token);
         return admin;
     }
+
+    @Override
+    public String toCsvString() {
+        String[] partes = { Integer.toString(getId()), getNickname(), getEmail(), getPassword(), getClass().getSimpleName().toUpperCase(),getCPF(),getBirthDate(),getSpobrefyToken()};
+        String csvUserString = String.join(";",partes);;
+
+        return csvUserString;
+    }
 }
     
 

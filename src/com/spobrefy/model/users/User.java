@@ -94,5 +94,11 @@ public class User {
         return usuario;
     }
 
+    public String toCsvString() {
+        String[] partes = { Integer.toString(getId()), getNickname(), getEmail(), getPassword(), getClass().getSimpleName().toUpperCase(),null,null,null};
+        String csvUserString = String.join(";",partes);;
+
+        return csvUserString;
+    }
 }
 

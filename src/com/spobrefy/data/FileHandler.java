@@ -1,10 +1,10 @@
 package com.spobrefy.data;
 
 import com.spobrefy.model.users.Admin;
+import com.spobrefy.model.users.Artist;
 import com.spobrefy.model.users.User;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,7 +27,6 @@ public class FileHandler {
         while (sc.hasNext()) {
             String line = sc.nextLine();
             totalLines.add(line);
-            System.out.println(line);
         }
 
         sc.close();
@@ -35,7 +34,23 @@ public class FileHandler {
         return totalLines;
     }
 
-    public static ArrayList<User> reqUserData() {
+    public static void writeData(String fileName, String newLine) {
+        String[] partesCaminho ={".","src","com","spobrefy","data","files_data", fileName};
+        String caminhoArquivo =  String.join(File.separator,partesCaminho);
+        File file = new File(caminhoArquivo);
+
+        FileWriter pw = null;
+        try {
+            pw = new FileWriter(file, true);
+            pw.append(newLine+"\n");
+            pw.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static ArrayList<User> readUserData() {
         ArrayList<User> users = new ArrayList<>();
 
         String spliter = ";";
@@ -44,8 +59,11 @@ public class FileHandler {
 
             User newUser;
             switch (values[4]) {
-                case "DEFAULT":
+                case "USER":
                     newUser = new User(Integer.parseInt(values[0]), values[1], values[2], values[3]);
+                    break;
+                case "ARTIST":
+                    newUser = new Artist(Integer.parseInt(values[0]), values[1], values[2], values[3],values[5], values[6]);
                     break;
                 case "ADMIN":
                     newUser = new Admin(Integer.parseInt(values[0]), values[1], values[2], values[3], values[5], values[6], values[7]);
@@ -57,5 +75,9 @@ public class FileHandler {
             users.add(newUser);
         }
         return users;
+    }
+
+    public static void writeUserData(User user) {
+        writeData("users.csv", user.toCsvString());
     }
 }

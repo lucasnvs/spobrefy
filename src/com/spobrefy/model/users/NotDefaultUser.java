@@ -69,4 +69,12 @@ public abstract class NotDefaultUser extends User {
             return null;
         }
     }
+
+    @Override
+    public String toCsvString() {
+        String[] partes = { Integer.toString(getId()), getNickname(), getEmail(), getPassword(), getClass().getSimpleName().toUpperCase(),getCPF(),getBirthDate(),null};
+        String csvUserString = String.join(";",partes);;
+
+        return csvUserString;
+    }
 }
