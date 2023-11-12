@@ -1,7 +1,6 @@
-1;lucas;lucas@email.com;pastel2020;USER;null;null;null
+1;lucas;lucas@email.com;pastel2020;ARTIST;3543645766;20/12/2006;null
 2;Matue;matue30@email.com;30praUm;ARTIST;9822554812;22/03/1998;null
 3;Veigh;veighbaby@email.com;tururum;ARTIST;2349281022;16/08/2000;null
 4;Teto;tetinho@email.com;plaktudum;ARTIST;234233581022;20/11/2002;null
-5;CarlosPiloto;carlos@email.com;carlospiloto;ARTIST;;;null
-6;Pimbola;pimbola@email.com;senhapimbola;ADMIN;435234234;10/10/2000;pimbolatoken
-7;Modifier;mod@email.com;1234;USER;null;null;null
+5;adm;adm@email.com;adm;ADMIN;435234234;10/10/2000;admtoken
+6;modifier;mod@email.com;1234;ARTIST;3543645766;20/12/2006;null

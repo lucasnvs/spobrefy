@@ -47,6 +47,6 @@ public class UserFileHandler implements IFileHandler<User> {
 
     @Override
     public void removeData(User obj) {
-
+        FileHandler.deleteFileData(fileName, obj);
     }
 }

@@ -1,7 +1,10 @@
 package com.spobrefy.dao;
 
+import com.spobrefy.fdata.UpgradeRequestFileHandler;
+import com.spobrefy.fdata.UserFileHandler;
 import com.spobrefy.model.UpgradeRequest;
 import com.spobrefy.model.UpgradeType;
+import com.spobrefy.model.users.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +15,22 @@ public class UpgradeRequestsDAO implements IDao<UpgradeRequest> {
 
     public UpgradeRequestsDAO() {
         upgradeRequestsList = new ArrayList<>();
-        upgradeRequestsList.add(new UpgradeRequest(UsersDAO.getInstance().findById(5), UpgradeType.USER_TO_ARTIST));
     }
-
     public static UpgradeRequestsDAO getInstance() {
         return instance;
     }
+
+    @Override
+    public int getLastId() {
+        ArrayList<UpgradeRequest> list = this.findAll();
+        if (list.size() == 0) {
+            return 0;
+        }
+        return list.get(list.size() - 1).getId();
+    }
     @Override
     public UpgradeRequest findById(int id) {
-        for (UpgradeRequest u : upgradeRequestsList) {
+        for (UpgradeRequest u : findAll()) {
             if (u.getId() == id) {
                 return u;
             }
@@ -28,25 +38,26 @@ public class UpgradeRequestsDAO implements IDao<UpgradeRequest> {
         return null;
     }
     @Override
-    public List<UpgradeRequest> findAll() {
-        return upgradeRequestsList;
+    public ArrayList<UpgradeRequest> findAll() {
+        return UpgradeRequestFileHandler.getInstance().readData();
     }
 
     @Override
     public void save(UpgradeRequest object) {
-        upgradeRequestsList.add(object);
+        if(object == null) return;
+        UpgradeRequestFileHandler.getInstance().writeData(object);
     }
 
     @Override
     public void update(UpgradeRequest object) {
-        UpgradeRequest ur = findById(object.getId());
-        delete(ur);
-        save(object);
+        if(object == null) return;
+        UpgradeRequestFileHandler.getInstance().updateData(object);
     }
 
     @Override
     public void delete(UpgradeRequest object) {
-        upgradeRequestsList.remove(object);
+        if(object == null) return;
+        UpgradeRequestFileHandler.getInstance().removeData(object);
     }
 
     @Override

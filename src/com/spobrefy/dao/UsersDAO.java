@@ -56,14 +56,11 @@ public class UsersDAO implements IDao<User> {
     }
     @Override
     public void delete(User user) { // TODO: atualizar metodos delete
-        usersList.remove(user);
+        if(user == null) return;
+        UserFileHandler.getInstance().removeData(user);
     }
     @Override
     public void deleteById(int id) {
-        User userToBeDeleted = findById(id);
-        delete(userToBeDeleted);
-        if(userToBeDeleted.getClass().getSimpleName().equals("Artist")) {
-            ArtistsDAO.getInstance().delete((Artist) userToBeDeleted);
-        }
+        delete(findById(id));
     }
 }
