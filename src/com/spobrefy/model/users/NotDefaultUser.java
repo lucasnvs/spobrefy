@@ -1,7 +1,7 @@
 package com.spobrefy.model.users;
 
 import java.text.ParseException;
-import java.util.Scanner;
+
 import com.spobrefy.Util;
 import com.spobrefy.model.Playlist;
 

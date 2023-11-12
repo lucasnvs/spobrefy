@@ -1,7 +1,6 @@
 package com.spobrefy.dao;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.spobrefy.model.users.Artist;
 import com.spobrefy.model.users.User;
@@ -25,7 +24,7 @@ public class ArtistsDAO implements IDao<Artist> {
 
     @Override
     public int getLastId() {
-        return 0;
+        return artistsList.get(artistsList.size() - 1).getId();
     }
 
     @Override

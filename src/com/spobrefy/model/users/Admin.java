@@ -1,7 +1,5 @@
 package com.spobrefy.model.users;
 
-import java.util.Scanner;
-
 public class Admin extends NotDefaultUser {
     private String spobrefyToken;
     
@@ -28,7 +26,7 @@ public class Admin extends NotDefaultUser {
         this.spobrefyToken = token;
     }
 
-//    public static Admin create(Scanner scanner) { TODO: remover lixo
+//    public static Admin create(Scanner scanner) { // TODO: implementar
 //        System.out.println("Qual o token de acesso?");
 //        String token = scanner.next();
 //        if (admin != null) {

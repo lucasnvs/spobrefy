@@ -9,8 +9,8 @@ public class UpgradeRequest implements IAbleToSave {
 
     private int idUpgradeRequest;
     private User sender;
-    private String senderCPF;
-    private String senderBirthDate;
+    private final String senderCPF;
+    private final String senderBirthDate;
     private UpgradeType type;
     private Boolean isAnswered;
     private Boolean answer;

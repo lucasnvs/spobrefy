@@ -1,10 +1,5 @@
 Classe Music
-
 TODO: 1 - Ouvir // ao clicar em ouvir add +1 nas visualizacoes
 TODO: 2 - Dar like / Deslike (caso ja tenha dado like) // relacionado ao rating
 TODO: 3 - Add Comentario // comentarios
 TODO: 4 - Ver comentario // comentarios
-
-Solicitacoes de upgrade
-
-    TODO: Adm aceitar ou nao UpgradeRequest

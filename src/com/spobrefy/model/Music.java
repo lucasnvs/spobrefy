@@ -45,15 +45,6 @@ public class Music implements IAbleToSave {
         return author;
     }
 
-    private static Artist findAuthor(String authorName) {
-        for (Artist artist : ArtistsDAO.getInstance().findAll()) {
-            if (artist.getNickname().equals(authorName)) {
-                return artist;
-            }
-        }
-        return null;
-    }
-
     public static Music create(Scanner scanner, int idAuthor) {
         // nao consegui consertar o bug // um tempo depois... qual bug? nao sei
         System.out.println("Qual o título?");

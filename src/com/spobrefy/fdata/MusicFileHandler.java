@@ -1,8 +1,6 @@
 package com.spobrefy.fdata;
 
 import com.spobrefy.model.Music;
-import com.spobrefy.model.UpgradeRequest;
-import com.spobrefy.model.UpgradeType;
 
 import java.util.ArrayList;
 

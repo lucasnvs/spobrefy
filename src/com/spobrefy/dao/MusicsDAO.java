@@ -1,19 +1,12 @@
 package com.spobrefy.dao;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.spobrefy.fdata.MusicFileHandler;
 import com.spobrefy.model.Music;
-import com.spobrefy.model.users.User;
 
 public class MusicsDAO implements IDao<Music> {
     private static final MusicsDAO instance = new MusicsDAO();
-    private final ArrayList<Music> musicList;
-
-    public MusicsDAO() {
-        musicList = new ArrayList<>();
-    }
 
     public static MusicsDAO getInstance() {
         return instance;

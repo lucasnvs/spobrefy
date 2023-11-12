@@ -42,8 +42,6 @@ public class Sistema {
     }
 
     public User getLoggedUser() {
-        if(loggedUser == null) return UsersDAO.getInstance().findById(6); // TODO: REMOVE dev
-
         return loggedUser;
     }
 

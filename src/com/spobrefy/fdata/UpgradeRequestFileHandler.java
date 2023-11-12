@@ -1,15 +1,9 @@
 package com.spobrefy.fdata;
 
-import com.spobrefy.dao.UsersDAO;
 import com.spobrefy.model.UpgradeRequest;
 import com.spobrefy.model.UpgradeType;
-import com.spobrefy.model.users.Admin;
-import com.spobrefy.model.users.Artist;
-import com.spobrefy.model.users.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class UpgradeRequestFileHandler implements IFileHandler<UpgradeRequest>{
     private static final String fileName = "upgradeRequests.csv";

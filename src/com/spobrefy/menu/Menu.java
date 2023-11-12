@@ -3,10 +3,8 @@ import com.spobrefy.Sistema;
 import com.spobrefy.model.Music;
 import com.spobrefy.model.UpgradeRequest;
 import com.spobrefy.model.UpgradeType;
-import com.spobrefy.model.users.Artist;
 import com.spobrefy.model.users.User;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -22,8 +20,7 @@ public class Menu {
         sysLine();
         System.out.println("Olá querido usuário, para acessar o sistema será necessário logar:");
 
-        while (true) {
-            if(!dialogLogin()) break;
+        while (dialogLogin()) {
             while(true) {
                 if(!dialogFirstMenu()) break;
             }

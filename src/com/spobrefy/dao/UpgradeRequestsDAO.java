@@ -1,21 +1,13 @@
 package com.spobrefy.dao;
 
 import com.spobrefy.fdata.UpgradeRequestFileHandler;
-import com.spobrefy.fdata.UserFileHandler;
 import com.spobrefy.model.UpgradeRequest;
-import com.spobrefy.model.UpgradeType;
-import com.spobrefy.model.users.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UpgradeRequestsDAO implements IDao<UpgradeRequest> {
     private static final UpgradeRequestsDAO instance = new UpgradeRequestsDAO();
-    private final ArrayList<UpgradeRequest> upgradeRequestsList;
 
-    public UpgradeRequestsDAO() {
-        upgradeRequestsList = new ArrayList<>();
-    }
     public static UpgradeRequestsDAO getInstance() {
         return instance;
     }

@@ -1,7 +1,5 @@
 package com.spobrefy.model.users;
 
-import java.util.Scanner;
-
 import com.spobrefy.model.Playlist;
 
 public class Artist extends NotDefaultUser{
