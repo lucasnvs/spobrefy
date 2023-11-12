@@ -1,33 +1,38 @@
 package com.spobrefy.dao;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import com.spobrefy.fdata.UserFileHandler;
 import com.spobrefy.model.users.Admin;
 import com.spobrefy.model.users.Artist;
 import com.spobrefy.model.users.User;
 
 public class UsersDAO implements IDao<User> {
-    private static final UsersDAO instance = new UsersDAO();
-    private final ArrayList<User> usersList;
+    private static UsersDAO instance = new UsersDAO();
+    public final ArrayList<User> usersList;
 
     private UsersDAO() {
         usersList = new ArrayList<>();
-        usersList.add(new User("lucas", "lucas@email.com", "pastel2020"));
-        usersList.add(new Artist("Matue", "matue30@email.com", "30praUm", "9822554812", "22/03/1998"));
-        usersList.add(new Artist("Veigh", "veighbaby@email.com", "tururum", "2349281022", "16/08/2000"));
-        usersList.add(new Artist("Teto", "tetinho@email.com", "plaktudum", "234233581022", "20/11/2002"));
-        usersList.add(new User("CarlosPiloto", "carlos@email.com", "carlospiloto"));
-        usersList.add(new Admin(999,"Pimbola", "pimbola@email.com", "senhapimbola", "435234234","10/10/2000", "pimbolatoken"));
     }
 
     public static UsersDAO getInstance() {
+        if(instance == null)  {
+            instance = new UsersDAO();
+        }
         return instance;
+    }
+
+    public int getLastId() {
+        ArrayList<User> list = this.findAll();
+        if (list == null) {
+            return 0;
+        }
+        return list.get(list.size() - 1).getId();
     }
 
     @Override
     public User findById(int id) {
-        for (User user : usersList) {
+        for (User user : findAll()) {
             if (user.getId() == id) {
                 return user;
             }
@@ -36,27 +41,23 @@ public class UsersDAO implements IDao<User> {
     }
 
     @Override
-    public List<User> findAll() {
-        return usersList;
+    public ArrayList<User> findAll() {
+        return UserFileHandler.getInstance().readData();
     }
-
     @Override
     public void save(User user) {
-        usersList.add(user);
+        if(user == null) return;
+        UserFileHandler.getInstance().writeData(user);
     }
-
     @Override
-    public void update(User newUser) {
-        User u = findById(newUser.getId());
-        delete(u);
-        save(newUser);
+    public void update(User user) {
+        if(user == null) return;
+        UserFileHandler.getInstance().updateData(user);
     }
-
     @Override
-    public void delete(User user) {
+    public void delete(User user) { // TODO: atualizar metodos delete
         usersList.remove(user);
     }
-
     @Override
     public void deleteById(int id) {
         User userToBeDeleted = findById(id);

@@ -10,8 +10,8 @@ public class MusicsDAO implements IDao<Music> {
 
     public MusicsDAO() {
         musicList = new ArrayList<>();
-        musicList.add(new Music("Novo Balanco", ArtistsDAO.getInstance().findById(3)));
-        musicList.add(new Music("Deluxe", ArtistsDAO.getInstance().findById(3)));
+        musicList.add(new Music("Novo Balanco", ArtistsDAO.getInstance().findById(2)));
+        musicList.add(new Music("Deluxe", ArtistsDAO.getInstance().findById(4)));
         musicList.add(new Music("Conexões de Máfia", ArtistsDAO.getInstance().findById(2)));
         musicList.add(new Music("Bala Azul", ArtistsDAO.getInstance().findById(4)));
     }

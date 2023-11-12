@@ -7,7 +7,6 @@ public class UpgradeUserToArtist implements IUpgradeTo<User, Artist> {
 
     @Override
     public Artist upgrade(User obj) {
-        // remover da lista que ele pertence e add na lista de artistas, nao sei se faço por aq ou no metodo do sistema
         String birthDate = "";
         String cpf = "";
         return new Artist(obj.getId(), obj.getNickname(), obj.getEmail(), obj.getPassword(), cpf, birthDate);

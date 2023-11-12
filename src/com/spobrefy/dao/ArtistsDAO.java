@@ -45,7 +45,7 @@ public class ArtistsDAO implements IDao<Artist> {
 
     @Override
     public void update(Artist artist) {
-
+        System.out.println("updating artist");
     }
 
     @Override

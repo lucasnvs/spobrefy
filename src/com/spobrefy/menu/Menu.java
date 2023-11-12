@@ -5,7 +5,8 @@ import com.spobrefy.model.UpgradeRequest;
 import com.spobrefy.model.UpgradeType;
 import com.spobrefy.model.users.User;
 
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
 
 
 public class Menu {
@@ -17,31 +18,60 @@ public class Menu {
     }
 
     public void init() {
-        System.out.println("=======================================================================");
+        sysLine();
         System.out.println("Olá querido usuário, para acessar o sistema será necessário logar:");
         if(!dialogLogin()) return;
-
         while(true) {
             if(!dialogFirstMenu()) break;
         }
     }
+    public static void sysLine() {
+        System.out.println("=======================================================================");
+    }
+    public static void sysMessage(String message) {
+        sysLine();
+        System.out.println(message);
+        sysLine();
+    }
+
+    private int optionSelectHandler(List<Integer> options) {
+        int option = -1;
+        do {
+            try {
+                System.out.print("Ação: ");
+                option = scan.nextInt();
+                if(!options.contains(option)){
+                    option = -1;
+                    sysMessage("Por favor escolha valores entre as opções disponíveis!");
+                }
+            } catch (InputMismatchException e) {
+                sysMessage("Por favor escolha valores entre as opções disponíveis!");
+            }
+
+            scan.nextLine();
+        }while (option == -1);
+
+        return option;
+    }
 
     private Boolean dialogLogin() {
-        int aux;
         System.out.println("| 1 - Logar\n| 2 - Não possuo conta");
-        aux = scan.nextInt();
-        scan.nextLine();
 
-        if(aux == 1) {
-            if(sistema.login()) return true;
+        List<Integer> options = Arrays.asList(1, 2);
+
+        int option = optionSelectHandler(options);
+        switch (option) {
+            case 1 -> {
+                return sistema.login();
+            }
+            case 2 -> {
+                sistema.registerUser();
+                return sistema.login();
+            }
+            default -> {
+                return false;
+            }
         }
-
-        if(aux == 2) {
-            sistema.registerUser();
-            return sistema.login();
-        }
-
-        return false;
     }
 
     private Boolean dialogFirstMenu() {
@@ -54,30 +84,32 @@ public class Menu {
             System.out.println("| 4 - Área do "+ roleLoggedUser);
             System.out.println("| 5 - Deslogar");
         }
-        int aux = scan.nextInt();
-        scan.nextLine();
-        System.out.println("=======================================================================");
-        if(aux == 1) {
-            sistema.showMusics();
-            System.out.println("|");
-            System.out.println("+ Deseja fazer algumas das seguintes ações com uma música de sua escolha?"); // TODO: detalheszitos
-            System.out.println("=======================================================================");
-        }
-        if(aux == 2) {
-            sistema.showArtists();
-            System.out.println("|");
-            System.out.println("+ Deseja fazer algumas das seguintes ações com um artista de sua escolha?");
-            System.out.println("=======================================================================");
-        }
-        if(aux == 3) {
-            System.out.println(sistema.getLoggedUser());
-            dialogUpdateProperty();
-            System.out.println("=======================================================================");
+
+        List<Integer> options = Arrays.asList(1, 2, 3, 4, 5);
+        int option = optionSelectHandler(options);
+        sysLine();
+        switch (option) {
+            case 1 -> {
+                sistema.showMusics();
+                System.out.println("|");
+                System.out.println("+ Deseja fazer algumas das seguintes ações com uma música de sua escolha?"); // TODO: detalheszitos
+                sysLine();
+            }
+            case 2 -> {
+                sistema.showArtists();
+                System.out.println("|");
+                System.out.println("+ Deseja fazer algumas das seguintes ações com um artista de sua escolha?");
+                sysLine();
+            }
+            case 3 -> {
+                System.out.println(sistema.getLoggedUser());
+                dialogUpdateProperty();
+                sysLine();
+            }
         }
 
-        if(aux == 4 && roleLoggedUser.equals("User")) return false;
-
-        if(aux == 4 && !roleLoggedUser.equals("User")) {
+        if(option == 4 && roleLoggedUser.equals("User")) return false;
+        if(option == 4) {
             switch (sistema.getLoggedUser().getClass().getSimpleName()) {
                 case "Artist" -> {
                     while (true) {
@@ -92,67 +124,86 @@ public class Menu {
             }
         }
 
-        return aux != 5;
+        return option != 5;
     }
 
     private Boolean dialogArtistArea() {
         System.out.println("+ Menu de Ações:");
         System.out.println("| 1 - Publicar Música");
         System.out.println("| 2 - Voltar");
-        int aux = scan.nextInt();
-        scan.nextLine();
-        if(aux == 1) {
-            sistema.registerMusic();
-        }
-        if(aux == 2) {
-            return false;
-        }
-        System.out.println("=======================================================================");
 
+        List<Integer> options = Arrays.asList(1, 2);
+        int option = optionSelectHandler(options);
+
+        switch (option) {
+            case 1 -> sistema.registerMusic();
+            case 2 -> {
+                return false;
+            }
+        }
+        sysLine();
         return true;
     }
     private Boolean dialogAdminArea() {
         System.out.println("+ Menu de Ações:");
         System.out.println("| 1 - Excluir Usuário\n| 2 - Ver usuários\n| 3 - Banir Música\n| 4 - Solicitações de Upgrade\n| 5 - Voltar");
-        int aux = scan.nextInt();
-        scan.nextLine();
-        if(aux == 1) {
-            System.out.println("=======================================================================");
-            System.out.println("+ Digite o Id do usuário que deseja remover do sistema:");
-            int id = scan.nextInt();
-            User user = sistema.getAllUsers().findById(id);
-            sistema.getAllUsers().deleteById(id);
-            System.out.println("=======================================================================");
-            System.out.println("USUÁRIO DE ID "+id+" E NICKNAME "+user.getNickname()+" FOI REMOVIDO COM SUCESSO!");
-            System.out.println("=======================================================================");
-        }
-        if(aux == 2) {
-            sistema.showUsers();
-        }
-        if(aux == 3) {
-            sistema.showMusics();
-            System.out.println("=======================================================================");
-            System.out.println("+ Digite o Id da música a ser banida:");
-            int id = scan.nextInt();
-            Music music = sistema.getAllMusics().findById(id);
-            sistema.getAllMusics().deleteById(id);
-            System.out.println("=======================================================================");
-            System.out.println("A MÚSICA "+music.getName()+" DE "+music.getAuthor().getNickname()+" FOI BANIDA!");
-            System.out.println("=======================================================================");
-        }
-        if(aux == 4) {
-            sistema.showUpgradeRequests();
+
+        List<Integer> options = Arrays.asList(1, 2, 3, 4, 5);
+        int option = optionSelectHandler(options);
+        switch (option) {
+            case 1 -> {
+                sysLine();
+                System.out.println("+ Digite o Id do usuário que deseja remover do sistema:");
+                int id = scan.nextInt();
+                User user = sistema.getAllUsers().findById(id);
+                sistema.getAllUsers().deleteById(id);
+                sysMessage("USUÁRIO DE ID "+id+" E NICKNAME "+user.getNickname()+" FOI REMOVIDO COM SUCESSO!");
+            }
+            case 2 -> sistema.showUsers();
+            case 3 -> {
+                sistema.showMusics();
+                sysLine();
+                System.out.println("+ Digite o Id da música a ser banida:");
+                int id = scan.nextInt();
+                Music music = sistema.getAllMusics().findById(id);
+                sistema.getAllMusics().deleteById(id);
+                sysMessage("A MÚSICA "+music.getName()+" DE "+music.getAuthor().getNickname()+" FOI BANIDA!");
+            }
+            case 4 -> {
+                sistema.showUpgradeRequests();
+                sysLine();
+                System.out.println("+Deseja responder algum upgrade ?");
+                System.out.println("| 1 - SIM\n| 2 - NÃO");
+                options = Arrays.asList(1, 2);
+
+                option = optionSelectHandler(options);
+
+                switch (option) {
+                    case 1 -> {
+                        sysLine();
+                        System.out.println("+ Digite o Id de Upgrade a responder:");
+                        int id = scan.nextInt();
+                        System.out.println("+ Resposta:");
+                        System.out.println("| 1 - SIM\n| 2 - NÃO");
+                        options = Arrays.asList(1, 2);
+                        int optionAnswer = optionSelectHandler(options);
+                        sistema.setUpgradeRequestSystemAnswer(id, optionAnswer == 1);
+                    }
+                    case 2 -> {
+                        return true;
+                    }
+                }
+            }
+            case 5 -> {
+                return false;
+            }
         }
 
-        if(aux == 5) {
-          return false;
-        }
-
-        System.out.println("=======================================================================");
+        sysLine();
         return true;
     }
 
-    private Boolean dialogUpdateProperty() {
+    private Boolean dialogUpdateProperty() { // TODO: finalizar de refatorar esse metodo
         System.out.println("+ Deseja atualizar alguma informação do seu Perfil?");
         System.out.println("| 1 - Atualizar");
         if(sistema.getLoggedUser().getClass().getSimpleName().equals("User")) {
@@ -169,7 +220,7 @@ public class Menu {
 
         int aux = scan.nextInt();
         scan.nextLine();
-        System.out.println("=======================================================================");
+        sysLine();
 
         if(aux == 1) {
             System.out.println("+ Escolha qual propriedade deseja mudar.");
@@ -180,9 +231,8 @@ public class Menu {
                 System.out.println("+ Digite o seu novo nickname abaixo:");
                 String newNick = scan.nextLine();
                 sistema.getLoggedUser().setNickname(newNick);
-                System.out.println("=======================================================================");
-                System.out.println("NICKNAME ALTERADO COM SUCESSO PARA "+newNick);
-                System.out.println("=======================================================================");
+                sistema.getAllUsers().update(sistema.getLoggedUser());
+                sysMessage("NICKNAME ALTERADO COM SUCESSO PARA "+newNick);
             }
 
             if(aux == 2) {
@@ -191,13 +241,11 @@ public class Menu {
                 System.out.println("+ Agora digite sua nova senha:");
                 String newPass = scan.nextLine();
                 if(sistema.getLoggedUser().changePassword(lastPass, newPass)) {
-                    System.out.println("=======================================================================");
-                    System.out.println("SENHA ALTERADA COM SUCESSO!");
-                    System.out.println("=======================================================================");
+                    sistema.getAllUsers().update(sistema.getLoggedUser());
+                    sysMessage("SENHA ALTERADA COM SUCESSO!");
+                    return true;
                 }
-                System.out.println("=======================================================================");
-                System.out.println("ALGO DEU ERRADO... Repita o processo e tente novamente.");
-                System.out.println("=======================================================================");
+                sysMessage("ALGO DEU ERRADO... Repita o processo e tente novamente.");
                 dialogUpdateProperty();
             }
 
@@ -205,9 +253,7 @@ public class Menu {
                 System.out.println("+ Digite o seu novo email abaixo:");
                 String newEmail = scan.nextLine();
                 sistema.getLoggedUser().setEmail(newEmail);
-                System.out.println("=======================================================================");
-                System.out.println("EMAIL ALTERADO COM SUCESSO PARA "+newEmail);
-                System.out.println("=======================================================================");
+                sysMessage("EMAIL ALTERADO COM SUCESSO PARA "+newEmail);
             }
         }
 
@@ -217,12 +263,9 @@ public class Menu {
             UpgradeRequest request = new UpgradeRequest(sistema.getLoggedUser(), UpgradeType.USER_TO_ARTIST);
 
             sistema.sendUpgradeRequest(request);
-            System.out.println("=======================================================================");
-            System.out.println("Solicitação enviada com sucesso!");
-            System.out.println("=======================================================================");
+            sysMessage("Solicitação enviada com sucesso!");
         }
 
         return aux != 3;
     }
-
 }

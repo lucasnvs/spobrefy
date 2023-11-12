@@ -4,8 +4,9 @@ import java.util.Scanner;
 
 import com.spobrefy.dao.ArtistsDAO;
 import com.spobrefy.model.users.Artist;
+import com.spobrefy.shared.IAbleToSave;
 
-public class Music {
+public class Music implements IAbleToSave {
     private static int count = 0;
     private final int idMusic;
     private final String name;
@@ -16,6 +17,11 @@ public class Music {
         this.author = author;
         idMusic = ++count;
         author.getAuthoredPlaylist().addMusic(this);
+    }
+
+    @Override
+    public String toCsvString() {
+        return null;
     }
 
     public int getId() {

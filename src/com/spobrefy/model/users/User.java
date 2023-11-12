@@ -3,11 +3,12 @@ package com.spobrefy.model.users;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.spobrefy.dao.UsersDAO;
 import com.spobrefy.model.Playlist;
+import com.spobrefy.shared.IAbleToSave;
 
-public class User {
+public class User implements IAbleToSave {
     protected final int idUser;
-    private static int count = 0;
     protected String nickname;
     protected String email;
     protected String password;
@@ -18,7 +19,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.playlists = new ArrayList<>();
-        idUser = ++count;
+        idUser = UsersDAO.getInstance().getLastId() + 1;
     }
 
     public User(int id, String nick, String email, String password) {

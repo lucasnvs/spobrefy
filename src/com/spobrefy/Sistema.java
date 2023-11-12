@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.spobrefy.dao.UpgradeRequestsDAO;
+import com.spobrefy.hur.UpgradeUserToAdmin;
+import com.spobrefy.hur.UpgradeUserToArtist;
 import com.spobrefy.model.Music;
 import com.spobrefy.dao.ArtistsDAO;
 import com.spobrefy.dao.MusicsDAO;
@@ -10,6 +12,8 @@ import com.spobrefy.dao.UsersDAO;
 import com.spobrefy.model.UpgradeRequest;
 import com.spobrefy.model.users.*;
 
+import static com.spobrefy.menu.Menu.sysLine;
+import static com.spobrefy.menu.Menu.sysMessage;
 import static com.spobrefy.menu.TableGenerator.createTable;
 
 public class Sistema {
@@ -38,7 +42,7 @@ public class Sistema {
     }
 
     public User getLoggedUser() {
-        if(loggedUser == null) return UsersDAO.getInstance().findById(999);
+        if(loggedUser == null) return UsersDAO.getInstance().findById(6); // TODO: REMOVE dev
 
         return loggedUser;
     }
@@ -108,7 +112,7 @@ public class Sistema {
 
     public void showUpgradeRequests() {
         if(allUpgradeRequests.findAll().size() == 0) {
-            System.out.println("=======================================================================");
+            sysLine();
             System.out.println("NENHUMA SOLICITAÇÃO REGISTRADA...");
             return;
         }
@@ -152,18 +156,14 @@ public class Sistema {
         User user = User.create(this.scan);
         this.allUsers.save(user);
 
-        System.out.println("=======================================================================");
-        System.out.println("CONTA REGISTRADA COM SUCESSO!");
-        System.out.println("=======================================================================");
+        sysMessage("CONTA REGISTRADA COM SUCESSO!");
     }
 
     public void registerMusic() {
         Music newMusic = Music.create(this.scan, this.getLoggedUser().getId());
         this.allMusics.save(newMusic);
 
-        System.out.println("=======================================================================");
-        System.out.println("SUA MÚSICA "+newMusic.getName()+" FOI PUBLICADA COM SUCESSO!");
-        System.out.println("=======================================================================");
+        sysMessage("SUA MÚSICA "+newMusic.getName()+" FOI PUBLICADA COM SUCESSO!");
     }
 
     public UpgradeRequestsDAO getUpgradeRequests() {
@@ -179,8 +179,23 @@ public class Sistema {
         }
         return false;
     }
-    public void upgradeUser(User user) {
-        // allUsers.update();// TODO: usuario upgradado
+    public Boolean setUpgradeRequestSystemAnswer(int idReqUpgrade, Boolean boolAnswer) {
+        for(UpgradeRequest ur : getUpgradeRequests().findAll()) {
+            if(ur.getId() != idReqUpgrade) continue;
+
+            ur.setIsAnswered(true);
+            ur.setAnswer(boolAnswer);
+
+            User upgradedUser;
+            switch (ur.getType()) {
+                case USER_TO_ARTIST -> upgradedUser = new UpgradeUserToArtist().upgrade(ur.getSender());
+                case USER_TO_ADMIN -> upgradedUser = new UpgradeUserToAdmin().upgrade(ur.getSender());
+                default -> upgradedUser = null;
+            }
+            allUsers.update(upgradedUser);
+            return true;
+        }
+        return false;
     }
 
     private boolean loginVerify(String nick, String pass) {
@@ -196,18 +211,16 @@ public class Sistema {
     public Boolean login() {
             int aux;
             System.out.println("LOGIN DE USUÁRIO:");
-            System.out.println("=======================================================================");
+            sysLine();
             System.out.println("+ Qual o seu nickname?");
             String nick = this.scan.nextLine();
             System.out.println("+ Qual sua senha?");
             String pass = this.scan.nextLine();
 
             if(!loginVerify(nick, pass)) {
-                System.out.println("=======================================================================");
-                System.out.println("SENHA OU NICKNAME INCORRETOS!");
-                System.out.println("=======================================================================");
+                sysMessage("SENHA OU NICKNAME INCORRETOS!");
                 System.out.println("| Deseja tentar novamente?\n| 1 - Tentar novamente\n| 2 - Desistir...");
-                System.out.println("=======================================================================");
+                sysLine();
                 aux = this.scan.nextInt();
 
                 if(aux == 1) {
@@ -218,10 +231,8 @@ public class Sistema {
                     return false;
                 }
             }
-            
-            System.out.println("=======================================================================");      
-            System.out.println("LOGADO COM SUCESSO! SEJA BEM VINDO DE VOLTA "+ nick);
-            System.out.println("=======================================================================");
+
+            sysMessage("LOGADO COM SUCESSO! SEJA BEM VINDO DE VOLTA "+ nick);
             return true;
     }
 }
