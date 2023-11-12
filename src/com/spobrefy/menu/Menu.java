@@ -20,10 +20,14 @@ public class Menu {
     public void init() {
         sysLine();
         System.out.println("Olá querido usuário, para acessar o sistema será necessário logar:");
-        if(!dialogLogin()) return;
-        while(true) {
-            if(!dialogFirstMenu()) break;
+
+        while (true) {
+            if(!dialogLogin()) break;
+            while(true) {
+                if(!dialogFirstMenu()) break;
+            }
         }
+
     }
     public static void sysLine() {
         System.out.println("=======================================================================");
@@ -53,11 +57,11 @@ public class Menu {
 
         return option;
     }
-
+    // TODO: fazer uma operação de verificar somente o tipo do input de scan para n dar erro!
     private Boolean dialogLogin() {
-        System.out.println("| 1 - Logar\n| 2 - Não possuo conta");
+        System.out.println("| 1 - Logar\n| 2 - Não possuo conta\n| 3 - SAIR DO SISTEMA");
 
-        List<Integer> options = Arrays.asList(1, 2);
+        List<Integer> options = Arrays.asList(1, 2, 3);
 
         int option = optionSelectHandler(options);
         switch (option) {
@@ -76,7 +80,7 @@ public class Menu {
 
     private Boolean dialogFirstMenu() {
         String roleLoggedUser = sistema.getLoggedUser().getClass().getSimpleName();
-
+        System.out.println(":: Logado como "+sistema.getLoggedUser().getNickname());
         System.out.println("+ Oque deseja fazer?\n| 1 - Ver Músicas\n| 2 - Ver Artistas\n| 3 - Ir para o perfil");
         if(roleLoggedUser.equals("User")) {
             System.out.println("| 4 - Deslogar");
@@ -102,9 +106,11 @@ public class Menu {
                 sysLine();
             }
             case 3 -> {
-                System.out.println(sistema.getLoggedUser());
-                dialogUpdateProperty();
-                sysLine();
+                while (true) {
+                    System.out.println(sistema.getLoggedUser());
+                    if (!dialogUpdateProperty()) break;
+                    sysLine();
+                }
             }
         }
 
@@ -172,7 +178,7 @@ public class Menu {
             case 4 -> {
                 sistema.showUpgradeRequests();
                 sysLine();
-                System.out.println("+Deseja responder algum upgrade ?");
+                System.out.println("+ Deseja responder algum upgrade ?");
                 System.out.println("| 1 - SIM\n| 2 - NÃO");
                 options = Arrays.asList(1, 2);
 
@@ -187,7 +193,11 @@ public class Menu {
                         System.out.println("| 1 - SIM\n| 2 - NÃO");
                         options = Arrays.asList(1, 2);
                         int optionAnswer = optionSelectHandler(options);
-                        sistema.setUpgradeRequestSystemAnswer(id, optionAnswer == 1);
+                        if(sistema.setUpgradeRequestSystemAnswer(id, optionAnswer == 1)) {
+                            sysMessage("RESPOSTA ENVIADA COM SUCESSO!");
+                        } else {
+                            sysMessage("NÃO FOI POSSÍVEL REALIZAR ESSA AÇÃO!");
+                        }
                     }
                     case 2 -> {
                         return true;
@@ -202,8 +212,7 @@ public class Menu {
         sysLine();
         return true;
     }
-
-    private Boolean dialogUpdateProperty() { // TODO: finalizar de refatorar esse metodo
+    private Boolean dialogUpdateProperty() {
         System.out.println("+ Deseja atualizar alguma informação do seu Perfil?");
         System.out.println("| 1 - Atualizar");
         if(sistema.getLoggedUser().getClass().getSimpleName().equals("User")) {
@@ -218,42 +227,46 @@ public class Menu {
             System.out.println("| 2 - Voltar para o início");
         }
 
-        int aux = scan.nextInt();
-        scan.nextLine();
+        List<Integer> options = Arrays.asList(1, 2, 3);
+        int aux = optionSelectHandler(options);
         sysLine();
 
         if(aux == 1) {
             System.out.println("+ Escolha qual propriedade deseja mudar.");
-            System.out.println("| 1 - Nickname \n| 2 - Senha\n| 3 - Email");
-            aux = scan.nextInt();
-            scan.nextLine();
-            if(aux == 1) {
-                System.out.println("+ Digite o seu novo nickname abaixo:");
-                String newNick = scan.nextLine();
-                sistema.getLoggedUser().setNickname(newNick);
-                sistema.getAllUsers().update(sistema.getLoggedUser());
-                sysMessage("NICKNAME ALTERADO COM SUCESSO PARA "+newNick);
-            }
+            System.out.println("| 1 - Nickname \n| 2 - Senha\n| 3 - Email\n| 4 - Voltar");
+            List<Integer> optionsChange = Arrays.asList(1, 2, 3, 4);
+            aux = optionSelectHandler(optionsChange);
 
-            if(aux == 2) {
-                System.out.println("+ Para trocar de senha será necessário confirmar sua antiga senha!\n+ Digite abaixo sua antiga senha:");
-                String lastPass = scan.nextLine();
-                System.out.println("+ Agora digite sua nova senha:");
-                String newPass = scan.nextLine();
-                if(sistema.getLoggedUser().changePassword(lastPass, newPass)) {
+            switch (aux) {
+                case 1 -> {
+                    System.out.println("+ Digite o seu novo nickname abaixo:");
+                    String newNick = scan.nextLine();
+                    sistema.getLoggedUser().setNickname(newNick);
                     sistema.getAllUsers().update(sistema.getLoggedUser());
-                    sysMessage("SENHA ALTERADA COM SUCESSO!");
+                    sysMessage("NICKNAME ALTERADO COM SUCESSO PARA "+newNick);
+                }
+                case 2 -> {
+                    System.out.println("+ Para trocar de senha será necessário confirmar sua antiga senha!\n+ Digite abaixo sua antiga senha:");
+                    String lastPass = scan.nextLine();
+                    System.out.println("+ Agora digite sua nova senha:");
+                    String newPass = scan.nextLine();
+                    if(sistema.getLoggedUser().changePassword(lastPass, newPass)) {
+                        sistema.getAllUsers().update(sistema.getLoggedUser());
+                        sysMessage("SENHA ALTERADA COM SUCESSO!");
+                        return true;
+                    }
+                    sysMessage("ALGO DEU ERRADO... Repita o processo e tente novamente.");
+                    dialogUpdateProperty();
+                }
+                case 3 -> {
+                    System.out.println("+ Digite o seu novo email abaixo:");
+                    String newEmail = scan.nextLine();
+                    sistema.getLoggedUser().setEmail(newEmail);
+                    sysMessage("EMAIL ALTERADO COM SUCESSO PARA "+newEmail);
+                }
+                case 4 -> {
                     return true;
                 }
-                sysMessage("ALGO DEU ERRADO... Repita o processo e tente novamente.");
-                dialogUpdateProperty();
-            }
-
-            if(aux == 3) {
-                System.out.println("+ Digite o seu novo email abaixo:");
-                String newEmail = scan.nextLine();
-                sistema.getLoggedUser().setEmail(newEmail);
-                sysMessage("EMAIL ALTERADO COM SUCESSO PARA "+newEmail);
             }
         }
 

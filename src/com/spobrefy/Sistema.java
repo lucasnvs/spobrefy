@@ -180,9 +180,9 @@ public class Sistema {
         return false;
     }
     public Boolean setUpgradeRequestSystemAnswer(int idReqUpgrade, Boolean boolAnswer) {
-        for(UpgradeRequest ur : getUpgradeRequests().findAll()) {
+        for(UpgradeRequest ur : allUpgradeRequests.findAll()) {
             if(ur.getId() != idReqUpgrade) continue;
-
+            if(ur.getIsAnswered()) return false;
             ur.setIsAnswered(true);
             ur.setAnswer(boolAnswer);
 
@@ -192,6 +192,7 @@ public class Sistema {
                 case USER_TO_ADMIN -> upgradedUser = new UpgradeUserToAdmin().upgrade(ur.getSender());
                 default -> upgradedUser = null;
             }
+            allUpgradeRequests.update(ur);
             allUsers.update(upgradedUser);
             return true;
         }

@@ -94,7 +94,7 @@ public class User implements IAbleToSave {
     }
 
     public String toCsvString() {
-        String[] partes = { Integer.toString(getId()), getNickname(), getEmail(), getPassword(), getClass().getSimpleName().toUpperCase(),null,null,null};
+        String[] partes = { Integer.toString(getId()), getNickname(), getEmail(), getPassword(), getClass().getSimpleName().toUpperCase(),"null","null","null"};
 
         return String.join(";",partes);
     }
