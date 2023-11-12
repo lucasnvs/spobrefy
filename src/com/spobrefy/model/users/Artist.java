@@ -17,10 +17,6 @@ public class Artist extends NotDefaultUser{
         addPlaylist(authoredPlaylist);
     }
 
-    public static Artist create(Scanner scanner) {
-        return NotDefaultUser.create(Artist.class, scanner);
-    }
-
     public Playlist getAuthoredPlaylist() {
         return authoredPlaylist;
     }

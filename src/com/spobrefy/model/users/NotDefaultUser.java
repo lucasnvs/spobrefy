@@ -48,27 +48,6 @@ public abstract class NotDefaultUser extends User {
         return String.format("| Id: %d\n| Nickname: %s\n| Senha: %s\n| Email: %s\n| Idade: %d anos\n| CPF: %s\n| Data de Aniversário: %s\n| Playlists do Usuário: \n %s", getId(), nickname, password, email, getAge(), cpf, birthDate, txtPlaylist);
     }
 
-    public static <T extends NotDefaultUser> T create(Class<T> userType, Scanner scanner) {
-        System.out.println("Qual seu nick?");
-        String nick = scanner.nextLine();
-        System.out.println("Qual seu email?");
-        String email = scanner.nextLine();
-        System.out.println("Qual sua senha?");
-        String password = scanner.nextLine();
-        System.out.println("Qual seu cpf?");
-        String cpf = scanner.nextLine();
-        System.out.println("Qual sua data de nascimento? dd/mm/aaaa");
-        String birthDate = scanner.nextLine();
-
-        try {
-            return userType.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class)
-                    .newInstance(nick, email, password, cpf, birthDate);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     @Override
     public String toCsvString() {
         String[] partes = { Integer.toString(getId()), getNickname(), getEmail(), getPassword(), getClass().getSimpleName().toUpperCase(),getCPF(),getBirthDate(),null};

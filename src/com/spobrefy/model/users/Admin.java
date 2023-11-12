@@ -28,15 +28,14 @@ public class Admin extends NotDefaultUser {
         this.spobrefyToken = token;
     }
 
-    public static Admin create(Scanner scanner) {
-        Admin admin = NotDefaultUser.create(Admin.class, scanner);
-        System.out.println("Qual o token de acesso?");
-        String token = scanner.next();
-        if (admin != null) {
-            admin.setSpobrefyToken(token);
-        }
-        return admin;
-    }
+//    public static Admin create(Scanner scanner) { TODO: remover lixo
+//        System.out.println("Qual o token de acesso?");
+//        String token = scanner.next();
+//        if (admin != null) {
+//            admin.setSpobrefyToken(token);
+//        }
+//        return admin;
+//    }
 
     @Override
     public String toCsvString() {

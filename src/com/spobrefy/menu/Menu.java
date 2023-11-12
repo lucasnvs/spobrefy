@@ -3,6 +3,7 @@ import com.spobrefy.Sistema;
 import com.spobrefy.model.Music;
 import com.spobrefy.model.UpgradeRequest;
 import com.spobrefy.model.UpgradeType;
+import com.spobrefy.model.users.Artist;
 import com.spobrefy.model.users.User;
 
 import java.lang.reflect.Array;
@@ -176,7 +177,10 @@ public class Menu {
                 sysMessage("A MÚSICA "+music.getName()+" DE "+music.getAuthor().getNickname()+" FOI BANIDA!");
             }
             case 4 -> {
-                sistema.showUpgradeRequests();
+                if(!sistema.showUpgradeRequests()) {
+                    sysLine();
+                    return true;
+                }
                 sysLine();
                 System.out.println("+ Deseja responder algum upgrade ?");
                 System.out.println("| 1 - SIM\n| 2 - NÃO");
@@ -273,7 +277,11 @@ public class Menu {
         if(aux == 2 && !sistema.getLoggedUser().getClass().getSimpleName().equals("User")) return false;
 
         if(aux == 2 && sistema.getLoggedUser().getClass().getSimpleName().equals("User") && !sistema.userSendedUpgradeRequest(sistema.getLoggedUser().getId())) {
-            UpgradeRequest request = new UpgradeRequest(sistema.getLoggedUser(), UpgradeType.USER_TO_ARTIST);
+            System.out.println("Qual seu cpf?");
+            String cpf = scan.nextLine();
+            System.out.println("Qual sua data de nascimento? dd/mm/aaaa");
+            String birthDate = scan.nextLine();
+            UpgradeRequest request = new UpgradeRequest(sistema.getLoggedUser(), UpgradeType.USER_TO_ARTIST, cpf, birthDate);
 
             sistema.sendUpgradeRequest(request);
             sysMessage("Solicitação enviada com sucesso!");

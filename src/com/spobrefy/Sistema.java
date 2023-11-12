@@ -110,11 +110,11 @@ public class Sistema {
         System.out.println(tabela);
     }
 
-    public void showUpgradeRequests() {
+    public Boolean showUpgradeRequests() {
         if(allUpgradeRequests.findAll().size() == 0) {
             sysLine();
             System.out.println("NENHUMA SOLICITAÇÃO REGISTRADA...");
-            return;
+            return false;
         }
 
         ArrayList<ArrayList<String>> content = new ArrayList<>();
@@ -151,6 +151,7 @@ public class Sistema {
 
         String tabela = createTable(cabecalho, content);
         System.out.println(tabela);
+        return true;
     }
     public void registerUser() {
         User user = User.create(this.scan);
@@ -188,8 +189,8 @@ public class Sistema {
 
             User upgradedUser;
             switch (ur.getType()) {
-                case USER_TO_ARTIST -> upgradedUser = new UpgradeUserToArtist().upgrade(ur.getSender());
-                case USER_TO_ADMIN -> upgradedUser = new UpgradeUserToAdmin().upgrade(ur.getSender());
+                case USER_TO_ARTIST -> upgradedUser = new UpgradeUserToArtist().upgrade(ur.getSender(), ur.getSenderCPF(), ur.getSenderBirthDate());
+                case USER_TO_ADMIN -> upgradedUser = new UpgradeUserToAdmin().upgrade(ur.getSender(), ur.getSenderCPF(), ur.getSenderBirthDate()); // TODO: falta o token
                 default -> upgradedUser = null;
             }
             allUpgradeRequests.update(ur);
