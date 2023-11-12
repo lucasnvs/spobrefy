@@ -24,7 +24,7 @@ public class UsersDAO implements IDao<User> {
 
     public int getLastId() {
         ArrayList<User> list = this.findAll();
-        if (list == null) {
+        if (list.size() == 0) {
             return 0;
         }
         return list.get(list.size() - 1).getId();
@@ -55,7 +55,7 @@ public class UsersDAO implements IDao<User> {
         UserFileHandler.getInstance().updateData(user);
     }
     @Override
-    public void delete(User user) { // TODO: atualizar metodos delete
+    public void delete(User user) {
         if(user == null) return;
         UserFileHandler.getInstance().removeData(user);
     }

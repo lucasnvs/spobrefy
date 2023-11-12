@@ -24,6 +24,11 @@ public class ArtistsDAO implements IDao<Artist> {
     }
 
     @Override
+    public int getLastId() {
+        return 0;
+    }
+
+    @Override
     public Artist findById(int id) {
         for (Artist artist : artistsList) {
             if (artist.getId() == id) {
@@ -34,7 +39,7 @@ public class ArtistsDAO implements IDao<Artist> {
     }
 
     @Override
-    public List<Artist> findAll() {
+    public ArrayList<Artist> findAll() {
         return artistsList;
     }
 

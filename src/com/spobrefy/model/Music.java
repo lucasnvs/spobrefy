@@ -3,11 +3,11 @@ package com.spobrefy.model;
 import java.util.Scanner;
 
 import com.spobrefy.dao.ArtistsDAO;
+import com.spobrefy.dao.MusicsDAO;
 import com.spobrefy.model.users.Artist;
 import com.spobrefy.shared.IAbleToSave;
 
 public class Music implements IAbleToSave {
-    private static int count = 0;
     private final int idMusic;
     private final String name;
     private final Artist author;
@@ -15,13 +15,22 @@ public class Music implements IAbleToSave {
     public Music(String name, Artist author) {
         this.name = name;
         this.author = author;
-        idMusic = ++count;
+        this.idMusic = MusicsDAO.getInstance().getLastId() + 1;
+        author.getAuthoredPlaylist().addMusic(this);
+    }
+
+    public Music(int idMusic, String name, int idAuthor) {
+        this.name = name;
+        this.author = ArtistsDAO.getInstance().findById(idAuthor);
+        this.idMusic = idMusic;
         author.getAuthoredPlaylist().addMusic(this);
     }
 
     @Override
     public String toCsvString() {
-        return null;
+        String[] partes = { Integer.toString(getId()), getName(), String.valueOf(getAuthor().getId())};
+
+        return String.join(";",partes);
     }
 
     public int getId() {
