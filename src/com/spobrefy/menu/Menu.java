@@ -20,7 +20,8 @@ public class Menu {
         sysLine();
         System.out.println("Olá querido usuário, para acessar o sistema será necessário logar:");
 
-        while (dialogLogin()) {
+        while (true) {
+            if(!dialogLogin()) break;
             while(true) {
                 if(!dialogFirstMenu()) break;
             }
