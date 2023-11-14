@@ -31,25 +31,25 @@ public class UpgradeRequestsDAO implements IDao<UpgradeRequest> {
     }
     @Override
     public ArrayList<UpgradeRequest> findAll() {
-        return UpgradeRequestFileHandler.getInstance().readData();
+        return UpgradeRequestFileHandler.getInstance().readFileData();
     }
 
     @Override
     public void save(UpgradeRequest object) {
         if(object == null) return;
-        UpgradeRequestFileHandler.getInstance().writeData(object);
+        UpgradeRequestFileHandler.getInstance().writeFileData(object);
     }
 
     @Override
     public void update(UpgradeRequest object) {
         if(object == null) return;
-        UpgradeRequestFileHandler.getInstance().updateData(object);
+        UpgradeRequestFileHandler.getInstance().updateFileData(object);
     }
 
     @Override
     public void delete(UpgradeRequest object) {
         if(object == null) return;
-        UpgradeRequestFileHandler.getInstance().removeData(object);
+        UpgradeRequestFileHandler.getInstance().deleteFileData(object);
     }
 
     @Override

@@ -33,25 +33,25 @@ public class MusicsDAO implements IDao<Music> {
 
     @Override
     public ArrayList<Music> findAll() {
-        return MusicFileHandler.getInstance().readData();
+        return MusicFileHandler.getInstance().readFileData();
     }
 
     @Override
     public void save(Music object) {
         if(object == null) return;
-        MusicFileHandler.getInstance().writeData(object);
+        MusicFileHandler.getInstance().writeFileData(object);
     }
 
     @Override
     public void update(Music object) {
         if(object == null) return;
-        MusicFileHandler.getInstance().updateData(object);
+        MusicFileHandler.getInstance().updateFileData(object);
     }
 
     @Override
     public void delete(Music object) {
         if(object == null) return;
-        MusicFileHandler.getInstance().removeData(object);
+        MusicFileHandler.getInstance().deleteFileData(object);
     }
 
     @Override

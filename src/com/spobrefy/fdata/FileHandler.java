@@ -9,7 +9,47 @@ import java.util.Scanner;
 
 abstract class FileHandler {
     private static final String mainPath = String.join(File.separator, Arrays.asList(".","src","com","spobrefy","fdata","files_data"));
-    public static ArrayList<String> readFileData(String fileName) {
+
+    interface MiddleFunction {
+        void run(String[] values, IAbleToSave obj, PrintStream ps, String line);
+    }
+
+    public void tempFileHandler(String fileName, IAbleToSave obj, MiddleFunction middleFunction) {
+        String spliter = ";";
+        String tempFileName = "temp_"+fileName;
+        String path = mainPath+File.separator+tempFileName;
+        File tempFile = new File(path);
+
+        if (!tempFile.exists()) {
+            try {
+                tempFile.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        PrintStream ps;
+        try {
+            ps = new PrintStream(tempFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        for(String line : readFileData(fileName)) {
+            String[] values = line.split(spliter);
+
+            middleFunction.run(values, obj, ps, line);
+        }
+        ps.close();
+
+        String oldPath = mainPath+File.separator+fileName;
+        File oldFile = new File(oldPath);
+        oldFile.delete();
+
+        tempFile.renameTo(new File(oldPath));
+    }
+
+    public ArrayList<String> readFileData(String fileName) {
         ArrayList<String> totalLines = new ArrayList<>();
 
         String path =  mainPath+File.separator+fileName;
@@ -34,7 +74,7 @@ abstract class FileHandler {
         return totalLines;
     }
 
-    public static void writeFileData(String fileName, String newLine) {
+    public void writeFileData(String fileName, String newLine) {
         String path =  mainPath+File.separator+fileName;
         File file = new File(path);
 
@@ -57,79 +97,27 @@ abstract class FileHandler {
         }
     }
 
-    public static void updateFileData(String fileName, IAbleToSave obj) {
-        String spliter = ";";
-        String tempFileName = "temp_"+fileName;
-        String path = mainPath+File.separator+tempFileName;
-        File tempFile = new File(path);
+    public void updateFileData(String fileName, IAbleToSave obj) {
 
-        if (!tempFile.exists()) {
-            try {
-                tempFile.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        PrintStream ps;
-        try {
-            ps = new PrintStream(tempFile);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        for(String line : FileHandler.readFileData(fileName)) {
-            String[] values = line.split(spliter);
-
-            if(Integer.parseInt(values[0]) == obj.getId()) {
-                ps.println(obj.toCsvString()); // única diferença
+        MiddleFunction updateMiddleFunction = (values, object, ps, line) -> {
+            if(Integer.parseInt(values[0]) == object.getId()) {
+                ps.println(object.toCsvString());
             } else {
                 ps.println(line);
             }
-        }
-        ps.close();
+        };
 
-        String oldPath = mainPath+File.separator+fileName;
-        File oldFile = new File(oldPath);
-        oldFile.delete();
-
-        tempFile.renameTo(new File(oldPath));
+        tempFileHandler(fileName, obj, updateMiddleFunction);
     }
 
-    public static void deleteFileData(String fileName, IAbleToSave obj) {
-        String spliter = ";";
-        String tempFileName = "temp_"+fileName;
-        String path = mainPath+File.separator+tempFileName;
-        File tempFile = new File(path);
+    public void deleteFileData(String fileName, IAbleToSave obj) {
 
-        if (!tempFile.exists()) {
-            try {
-                tempFile.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        PrintStream ps;
-        try {
-            ps = new PrintStream(tempFile);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        for(String line : FileHandler.readFileData(fileName)) {
-            String[] values = line.split(spliter);
-
-            if(Integer.parseInt(values[0]) != obj.getId()) {
+        MiddleFunction deleteMiddleFunction = (values, object, ps, line) -> {
+            if(Integer.parseInt(values[0]) != object.getId()) {
                 ps.println(line);
             }
-        }
-        ps.close();
+        };
 
-        String oldPath = mainPath+File.separator+fileName;
-        File oldFile = new File(oldPath);
-        oldFile.delete();
-
-        tempFile.renameTo(new File(oldPath));
+        tempFileHandler(fileName, obj, deleteMiddleFunction);
     }
 }

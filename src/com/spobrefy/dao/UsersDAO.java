@@ -35,22 +35,22 @@ public class UsersDAO implements IDao<User> {
 
     @Override
     public ArrayList<User> findAll() {
-        return UserFileHandler.getInstance().readData();
+        return UserFileHandler.getInstance().readFileData();
     }
     @Override
     public void save(User user) {
         if(user == null) return;
-        UserFileHandler.getInstance().writeData(user);
+        UserFileHandler.getInstance().writeFileData(user);
     }
     @Override
     public void update(User user) {
         if(user == null) return;
-        UserFileHandler.getInstance().updateData(user);
+        UserFileHandler.getInstance().updateFileData(user);
     }
     @Override
     public void delete(User user) {
         if(user == null) return;
-        UserFileHandler.getInstance().removeData(user);
+        UserFileHandler.getInstance().deleteFileData(user);
     }
     @Override
     public void deleteById(int id) {

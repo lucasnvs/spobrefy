@@ -6,18 +6,18 @@ import com.spobrefy.model.users.User;
 
 import java.util.ArrayList;
 
-public class UserFileHandler implements IFileHandler<User> {
+public class UserFileHandler extends FileHandler implements IFileHandler<User> {
     private static final String fileName = "users.csv";
     private static final UserFileHandler instance = new UserFileHandler();
     public static UserFileHandler getInstance() {
         return instance;
     }
 
-    public ArrayList<User> readData() {
+    public ArrayList<User> readFileData() {
         ArrayList<User> users = new ArrayList<>();
         String spliter = ";";
 
-        for(String line : FileHandler.readFileData(fileName)) {
+        for(String line : super.readFileData(fileName)) {
             String[] values = line.split(spliter);
 
             User newUser;
@@ -35,18 +35,15 @@ public class UserFileHandler implements IFileHandler<User> {
         return users;
     }
 
-    @Override
-    public void writeData(User obj) {
-        FileHandler.writeFileData(fileName, obj.toCsvString());
+    public void writeFileData(User obj) {
+        super.writeFileData(fileName, obj.toCsvString());
     }
 
-    @Override
-    public void updateData(User obj) {
-        FileHandler.updateFileData(fileName, obj);
+    public void updateFileData(User obj) {
+        super.updateFileData(fileName, obj);
     }
 
-    @Override
-    public void removeData(User obj) {
-        FileHandler.deleteFileData(fileName, obj);
+    public void deleteFileData(User obj) {
+        super.deleteFileData(fileName, obj);
     }
 }
